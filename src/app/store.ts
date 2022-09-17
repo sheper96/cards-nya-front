@@ -1,11 +1,13 @@
 import {applyMiddleware, combineReducers, createStore } from "redux";
-import {todolistsReducer} from "./todolists-reducer";
-import {tasksReducer} from "./tasks-reducer";
 import thunk from "redux-thunk";
+import loginReducer from "../features/Login/login-reducer";
+import profileReducer from "../features/Profile/profile-reducer";
+import registrationPageReducer from "../features/Registration/registration-reducer";
 
 const rootReducer = combineReducers({
-    todolists : todolistsReducer,
-    tasks : tasksReducer
+  profilePage : profileReducer,
+  loginPage : loginReducer,
+  registrationPage : registrationPageReducer
 })
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
