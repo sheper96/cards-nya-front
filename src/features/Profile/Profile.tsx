@@ -1,8 +1,6 @@
 import { connect } from "react-redux"
 
 const Profile=(props:any)=> {
-    debugger
-
         return(
             <div>
                 <p>{props.profile}</p>
