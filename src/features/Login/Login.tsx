@@ -5,7 +5,7 @@ const Login=(props:any)=> {
 
         return(
             <div>
-                <h1>Login 123 </h1>
+                <h1>Login 123  </h1>
             </div>
         )
 
