@@ -6,12 +6,7 @@ const Profile=(props:any)=> {
                 <p>{props.profile}</p>
             </div>
         )
-
-
-    }
-
-
-
+}
 
 const mapStateToProps = (state: any) => {
     return {
