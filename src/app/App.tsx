@@ -17,7 +17,8 @@ const theme = createTheme({
     palette: {
         primary: {
             main: '#366EFF',
-        }
+        },
+       
     },
 });
 
@@ -28,7 +29,7 @@ function App() {
                 <Header/>
                 <Routes>
                     <Route path={'/login'} element={<Login/>}></Route>
-                    <Route path={'/'} element={<Profile/>}></Route>
+                    <Route path={'/profile'} element={<Profile/>}></Route>
                     <Route path={'/registration'} element={<Registration/>}></Route>
                 </Routes>
             </div>

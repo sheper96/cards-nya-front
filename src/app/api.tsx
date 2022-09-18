@@ -17,3 +17,6 @@ export const registerAPI = {
         return instance.post('auth/register', data);
     }
 }
+
+
+
