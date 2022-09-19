@@ -19,4 +19,21 @@ export const registerAPI = {
 }
 
 
+export const authAPI = {
+    authMe() {
+        return instance.post('auth/me');
+    },
+    updateName(name:string) {
+        return instance.put('auth/me', {name:name ,avatar: ''});
+    },
+    login() {
+        return instance.post('auth/login', {
+            "email": "valeralyzhin@gmail.com" ,
+            "password": "qwerty123" ,
+            "rememberMe": true
+        });
+    }
+}
+
+
 
