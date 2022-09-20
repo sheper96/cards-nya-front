@@ -24,6 +24,7 @@ let authReducer = (state = initialState, action: any) => {
 
     switch (action.type) {
         case SET_USER_DATA:
+            debugger
             return {
                 ...state,
                 ...action.payload,
@@ -74,11 +75,9 @@ export const updateNameAC = (name:string)=>{
     }
 }
 
-export const authThunkCreator  = ()=> {
+export const authTC  = ()=> {
     return (dispatch: Dispatch<AnyAction>) => {
-        debugger
         return authAPI.authMe().then(response => {
-
                 let {_id, email, rememberMe,isAdmin,name,verified,publicCardPacksCount,created,updated,__v,token,tokenDeathTime} = response.data;
                 dispatch(setUserDataAC(_id, email, rememberMe,isAdmin,name,verified,publicCardPacksCount,created,updated,__v,token,tokenDeathTime))
 

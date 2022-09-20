@@ -8,6 +8,7 @@ import {Route, Routes} from "react-router-dom";
 import {createTheme} from '@mui/material/styles'
 import {ThemeProvider} from "@mui/material";
 import {Snackbars} from "../common/snackbars/Snackbars";
+import { useSelector } from 'react-redux';
 
 export const font = "'Montserrat', sans-serif";
 const theme = createTheme({
@@ -23,6 +24,10 @@ const theme = createTheme({
 });
 
 function App() {
+    
+    const initalized = useSelector((state:any)=>  state.app.isInitialized)
+    
+    console.log(initalized)
     return (
         <ThemeProvider theme={theme}>
             <div className={s.app}>
