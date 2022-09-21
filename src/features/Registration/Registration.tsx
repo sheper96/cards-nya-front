@@ -4,8 +4,8 @@ import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import {useFormik} from "formik";
 import {Button, FormGroup, IconButton, InputAdornment} from "@mui/material";
 import TextField from '@material-ui/core/TextField';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+/*import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';*/
 
 import {font} from "../../app/App";
 import s from './Registration.module.css'
@@ -109,7 +109,7 @@ const Registration = () => {
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
                                         >
-                                            {isShowPassword ? <VisibilityOff/> : <Visibility/>}
+                                  {/*       //   {isShowPassword ? <VisibilityOff/> : <Visibility/>}*/}
                                         </IconButton>
                                     </InputAdornment>
                             }}
@@ -138,7 +138,7 @@ const Registration = () => {
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
                                         >
-                                            {isShowPassword ? <VisibilityOff/> : <Visibility/>}
+                            {/*             //   {isShowPassword ? <VisibilityOff/> : <Visibility/>}*/}
                                         </IconButton>
                                     </InputAdornment>
                             }}
