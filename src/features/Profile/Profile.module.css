@@ -17,14 +17,14 @@
     width: 96px;
     height: 96px;
     border-radius: 50%;
+
 }
 
-.login {
+.name {
     font-size: 20px;
     font-weight: bold;
     color: #000;
-   /*margin: 0 0 20px 0;*/
-    margin-top: 200px;
+    padding: 30px  0;
 }
 
 .email {
@@ -32,7 +32,7 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
-    margin: 0 0 30px;
+    margin: 30px  0;
     /* identical to box height, or 171% */
 
     display: flex;

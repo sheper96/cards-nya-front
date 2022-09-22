@@ -8,4 +8,21 @@
     justify-content: space-between;
 }
 
+.button{
+    display: flex;
+    flex-direction: row;
+}
+
+.img{
+    display: flex;
+    align-items: center;
+    margin: 0 20px;
+}
+
+.img img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
 

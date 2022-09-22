@@ -7,7 +7,7 @@ import {connect, useSelector} from "react-redux"
 import {authAPI} from "../../app/api"
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer"
 import {useAppDispatch} from "../../common/hooks/react-redux-hooks"
-import {authTC, registersssssTC, updateNameTC} from "./auth-reducer"
+import {authTC, logOutTC, updateNameTC} from "./auth-reducer"
 import s from './Profile.module.css'
 
 
@@ -16,6 +16,7 @@ const Profile = (props: any) => {
     const dispatch = useAppDispatch()
 
     const nameAuth = useSelector((state: any) => state.auth.name)
+    const email = useSelector((state: any) => state.auth.email)
     
     const [name, setName] = useState(props.nameAuth)
     const [editmode, setEditMode] = useState(false)
@@ -43,20 +44,20 @@ const Profile = (props: any) => {
                             src="https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg"/>
                     </div>
                     <div onDoubleClick={() => setEditMode(true)}>
-                        {!editmode && <span className={s.login}>
+                        {!editmode && <span className={s.name}>
                        {nameAuth} <FontAwesomeIcon icon={faPen}/></span>}
                     </div>
                     <div onBlur={updateStatusHandler}>
                         {editmode && <input autoFocus type="text" value={name} onChange={setNameHandler}/>}
                     </div>
-                    <span className={s.email}>1234@gmail.com</span>
-                    <Button style={{
+                    <span className={s.email}>{email}</span>
+                    <Button 
+                        onClick={()=>dispatch(logOutTC())}
+                        style={{
                         backgroundColor: "#ffffff",
                         color: '#000'
                     }} variant="contained" size="large" sx={{borderRadius: 7.5}}> <FontAwesomeIcon
                         icon={faArrowRightFromBracket}/>Log Out</Button>
-
-                    {/*   <Button onClick={() => dispatch(authTC())}>auth</Button>*/}
                     <Button onClick={() => {
                         authAPI.login()
                     }}>login</Button>

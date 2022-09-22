@@ -25,9 +25,6 @@ const theme = createTheme({
 
 function App() {
     
-    const initalized = useSelector((state:any)=>  state.app.isInitialized)
-    
-    console.log(initalized)
     return (
         <ThemeProvider theme={theme}>
             <div className={s.app}>

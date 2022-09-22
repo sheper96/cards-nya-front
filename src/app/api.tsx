@@ -32,6 +32,9 @@ export const authAPI = {
             "password": "qwerty123" ,
             "rememberMe": true
         });
+    },
+    logOut() {
+        return instance.delete('auth/me');
     }
 }
 
