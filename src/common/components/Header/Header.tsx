@@ -1,7 +1,3 @@
-import React, { useEffect } from 'react'
-import {Box} from "@mui/material"
-import React from 'react'
-import {Box, LinearProgress} from "@mui/material"
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Button from '@mui/material/Button'
@@ -9,10 +5,10 @@ import s from './Header.module.css'
 import logo from '../../../assets/images/logo.svg'
 import { authTC, logOutTC } from '../../../features/Profile/auth-reducer'
 import { useAppDispatch } from '../../hooks/react-redux-hooks'
-import { useSelector } from 'react-redux'
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../../app/store";
 import {RequestStatusType} from "../../../app/app-reducer";
+import { Box, LinearProgress } from '@mui/material'
 
 const Header = () => {
     const isOpen=useSelector<AppRootStateType,RequestStatusType>(state=>state.app.status)

@@ -7,13 +7,10 @@ import {connect, useSelector} from "react-redux"
 import {authAPI} from "../../app/api"
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer"
 import {useAppDispatch} from "../../common/hooks/react-redux-hooks"
-import {authTC, logOutTC, updateNameTC} from "./auth-reducer"
+import {authTC, logOutTC,  updateNameTC} from "./auth-reducer"
 import s from './Profile.module.css'
 
-import {connect, useSelector} from "react-redux"
-import {useAppDispatch} from "../../common/hooks/react-redux-hooks";
 import {AppRootStateType} from "../../app/store";
-import {logOutTC} from "../Login/login-reducer";
 import {Navigate} from "react-router-dom";
 import React from "react";
 
@@ -23,7 +20,7 @@ const Profile = (props: any) => {
 
     const nameAuth = useSelector((state: any) => state.auth.name)
     const email = useSelector((state: any) => state.auth.email)
-    
+
     const [name, setName] = useState(props.nameAuth)
     const [editmode, setEditMode] = useState(false)
 
@@ -35,7 +32,7 @@ const Profile = (props: any) => {
         dispatch(updateNameTC(name))
 
     }
-    
+
     useEffect(() => {
         dispatch(authTC())
         setName(nameAuth)
@@ -57,21 +54,19 @@ const Profile = (props: any) => {
                         {editmode && <input autoFocus type="text" value={name} onChange={setNameHandler}/>}
                     </div>
                     <span className={s.email}>{email}</span>
-                    <Button 
-                        onClick={()=>dispatch(logOutTC())}
+                    <Button
+                        onClick={() => dispatch(logOutTC())}
                         style={{
-                        backgroundColor: "#ffffff",
-                        color: '#000'
-                    }} variant="contained" size="large" sx={{borderRadius: 7.5}}> <FontAwesomeIcon
+                            backgroundColor: "#ffffff",
+                            color: '#000'
+                        }} variant="contained" size="large" sx={{borderRadius: 7.5}}> <FontAwesomeIcon
                         icon={faArrowRightFromBracket}/>Log Out</Button>
-                    <Button onClick={() => {
-                        authAPI.login()
-                    }}>login</Button>
                 </div>
             </BoxContainer>
         </div>
     )
-const Profile=(props:any)=> {
+}
+/*const Profile=(props:any)=> {
     const dispatch=useAppDispatch()
     const isLoggedIn=useSelector<AppRootStateType,boolean>(state=>state.app.isInitialized)
     if (isLoggedIn===false){
@@ -83,6 +78,6 @@ const Profile=(props:any)=> {
                 <button onClick={()=>dispatch(logOutTC())}> logout</button>
             </div>
         )
-}
+}*/
 
 export default Profile;

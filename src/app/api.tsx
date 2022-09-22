@@ -32,12 +32,15 @@ export const authAPI = {
     updateName(name:string) {
         return instance.put('auth/me', {name:name ,avatar: ''});
     },
-    login() {
+   /* login() {
         return instance.post('auth/login', {
             "email": "valeralyzhin@gmail.com" ,
             "password": "qwerty123" ,
             "rememberMe": true
         });
+    },*/
+    login(data: loginParamsType) {
+        return instance.post('/auth/login', data);
     },
     logOut() {
         return instance.delete('auth/me');
@@ -47,6 +50,7 @@ export const authAPI = {
 
 
 
+/*
 export const authAPI2={
     login(data: loginParamsType) {
         return instance.post('/auth/login', data);
@@ -56,4 +60,4 @@ export const logOutAPI={
     logOut(){
         return instance.delete('/auth/me')
     }
-}
+}*/

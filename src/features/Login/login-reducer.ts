@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {authAPI, loginParamsType, logOutAPI, registerAPI} from "../../app/api";
+import {authAPI, loginParamsType, registerAPI} from "../../app/api";
 import {handleServerNetworkError} from "../../common/utils/utils";
 import {isAxiosError} from "../Registration/registration-reducer";
 import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-reducer";
@@ -49,7 +49,7 @@ let loginReducer = (state=initialState,action: actionsType)=>{
 }
 export const logOutTC=()=>async (dispatch:Dispatch) =>{
     try {
-        const res= await logOutAPI.logOut()
+        const res= await authAPI.logOut()
         dispatch(setAppInitializedAC(false))
         console.log(res)
     }
