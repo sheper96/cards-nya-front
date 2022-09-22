@@ -1,0 +1,48 @@
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 64px);
+}
+
+.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.img img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+
+}
+
+.name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    padding: 30px  0;
+}
+
+.email {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    margin: 30px  0;
+    /* identical to box height, or 171% */
+
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+
+    opacity: 0.5;
+}
+
+.logOut {
+
+}

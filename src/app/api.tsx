@@ -23,7 +23,31 @@ export const registerAPI = {
         return instance.post('auth/register', data);
     }
 }
-export const authAPI={
+
+
+export const authAPI = {
+    authMe() {
+        return instance.post('auth/me');
+    },
+    updateName(name:string) {
+        return instance.put('auth/me', {name:name ,avatar: ''});
+    },
+    login() {
+        return instance.post('auth/login', {
+            "email": "valeralyzhin@gmail.com" ,
+            "password": "qwerty123" ,
+            "rememberMe": true
+        });
+    },
+    logOut() {
+        return instance.delete('auth/me');
+    }
+}
+
+
+
+
+export const authAPI2={
     login(data: loginParamsType) {
         return instance.post('/auth/login', data);
     }

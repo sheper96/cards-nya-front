@@ -1,4 +1,5 @@
 import React from 'react';
+import Login from '../features/Login/Login';
 import Profile from '../features/Profile/Profile';
 import Registration from '../features/Registration/Registration';
 import s from './App.module.css'
@@ -10,6 +11,7 @@ import {Snackbars} from "../common/snackbars/Snackbars";
 import {Login} from "../features/Login/Login";
 import {ErrorSnackbar} from "../common/components/ErrorSnackBar/ErrorSnackBat";
 import {NewPassword} from "../features/NewPassword/NewPassword";
+import { useSelector } from 'react-redux';
 
 export const font = "'Montserrat', sans-serif";
 const theme = createTheme({
@@ -30,7 +32,7 @@ function App() {
                 <Header/>
                 <Routes>
                     <Route path={'/login'} element={<Login/>}></Route>
-                    <Route path={'/'} element={<Profile/>}></Route>
+                    <Route path={'/profile'} element={<Profile/>}></Route>
                     <Route path={'/registration'} element={<Registration/>}></Route>
                     <Route path={'/newpassword'} element={<NewPassword/>}></Route>
 
