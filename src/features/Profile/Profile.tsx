@@ -1,7 +1,7 @@
 import {faJs} from "@fortawesome/free-brands-svg-icons"
 import {faArrowRightFromBracket, faHouseLaptop, faPen} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {Button} from "@mui/material"
+import {Button, TextField} from "@mui/material"
 import {useEffect, useState} from "react"
 import {connect, useSelector} from "react-redux"
 import {authAPI} from "../../app/api"
@@ -51,7 +51,8 @@ const Profile = (props: any) => {
                        {nameAuth} <FontAwesomeIcon icon={faPen}/></span>}
                     </div>
                     <div onBlur={updateStatusHandler}>
-                        {editmode && <input autoFocus type="text" value={name} onChange={setNameHandler}/>}
+                        {editmode &&
+                            <TextField autoFocus value={name} onChange={setNameHandler} id="standard-basic" label="Name" variant="standard" />}
                     </div>
                     <span className={s.email}>{email}</span>
                     <Button

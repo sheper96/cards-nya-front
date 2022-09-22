@@ -5,14 +5,30 @@ const SET_USER_DATA = "SET_USER_DATA";
 const CHANGE_USER_NAME = "CHANGE_USER_NAME";
 
 
-let initialState = {
+export type authType={
+    _id: null | number,
+    email: null | string,
+    rememberMe: null | boolean,
+    isAdmin: null | boolean,
+    name: null | string,
+    verified: null | boolean,
+    publicCardPacksCount: null | number,
+    created: any,
+    updated: any,
+    __v: any,
+    token: any,
+    tokenDeathTime: any,
+    logedIn : boolean
+}
+
+let initialState:authType = {
     _id: null,
     email: null,
     rememberMe: null,
     isAdmin: null,
     name: null,
     verified: null,
-    publicCardPacksCount: 0,
+    publicCardPacksCount: null,
     created: null,
     updated: null,
     __v: 0,
@@ -22,7 +38,18 @@ let initialState = {
 
 }
 
-let authReducer = (state = initialState, action: any) => {
+type setUserDataType={
+    type:'SET_USER_DATA',
+    payload:authType
+}
+
+type changeUserNameType={
+    type:'CHANGE_USER_NAME',
+    name:string
+}
+type actionsType=setUserDataType | changeUserNameType
+
+let authReducer = (state = initialState, action: actionsType) => {
 
     switch (action.type) {
         case SET_USER_DATA:

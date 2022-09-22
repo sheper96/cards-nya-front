@@ -63,6 +63,7 @@ export const loginTC = (data: loginParamsType) => async (dispatch: Dispatch<Acti
             console.log(res)
             setUserInfoAC(res.data)
             dispatch(setAppInitializedAC(true))
+            window.location.href = '/profile'
         }
     }
     catch (error: unknown){
