@@ -30,7 +30,7 @@ export const registerTC = (data: registerParamsType) => async (dispatch: Dispatc
     try {
 
         const res = await registerAPI.register(data)
-       window.location.href='/login'
+                        window.location.href='/login'
 
         debugger
 

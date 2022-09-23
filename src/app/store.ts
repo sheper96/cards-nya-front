@@ -6,14 +6,14 @@ import registrationPageReducer from "../features/Registration/registration-reduc
 import {appReducer} from "./app-reducer";
 
 const rootReducer = combineReducers({
-  profilePage : profileReducer,
-  loginPage : loginReducer,
-  registrationPage : registrationPageReducer,
-  app: appReducer
+    profilePage: profileReducer,
+    loginPage: loginReducer,
+    registrationPage: registrationPageReducer,
+    app: appReducer
 })
 
 
-export const store = createStore(rootReducer,applyMiddleware(thunk))
+export const store = createStore(rootReducer, applyMiddleware(thunk))
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
 export type AppDispatch = Dispatch<AnyAction> & ThunkDispatch<AppRootStateType, null, AnyAction>
