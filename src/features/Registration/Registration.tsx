@@ -67,8 +67,7 @@ const Registration = () => {
     return (
         <div className={s.container}>
             <BoxContainer title={'Sing in'} subTextForm={'Already have an account?'} subLinkUrlText={'Sign In'} subLinkUrl={'/login'} >
-                <form className={s.form} onSubmit={formik.handleSubmit}>
-
+                <form onSubmit={formik.handleSubmit}>
                     <FormGroup>
                         <TextField
                             error={
@@ -147,7 +146,6 @@ const Registration = () => {
                             Sing up
                         </Button>
                     </FormGroup>
-
                 </form>
             </BoxContainer>
         </div>
