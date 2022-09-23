@@ -1,8 +1,9 @@
 import {Dispatch} from "redux";
-import {authAPI, loginParamsType, registerAPI} from "../../app/api";
+import {authAPI, loginParamsType} from "../../app/api";
 import {handleServerNetworkError} from "../../common/utils/utils";
 import {isAxiosError} from "../Registration/registration-reducer";
 import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-reducer";
+
 
 export type signInType={
     email: string,
@@ -63,7 +64,6 @@ export const loginTC = (data: loginParamsType) => async (dispatch: Dispatch<Acti
             console.log(res)
             setUserInfoAC(res.data)
             dispatch(setAppInitializedAC(true))
-            window.location.href = '/profile'
         }
     }
     catch (error: unknown){
@@ -81,7 +81,6 @@ export const loginTC = (data: loginParamsType) => async (dispatch: Dispatch<Acti
     }
     finally {
         dispatch(setAppStatusAC('succeeded'))
-
     }
 
 }

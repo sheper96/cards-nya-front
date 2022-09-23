@@ -1,7 +1,5 @@
-import { Dispatch } from "redux";
-
-import axios from "axios";
-import {handleServerNetworkError} from "../common/utils/utils";
+import { Dispatch } from "redux"
+import {authAPI} from "./api";
 
 
 const initialState: InitialStateType = {
@@ -26,18 +24,18 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
     }
 }
 
+
 export const initializeAppTC = () => async (dispatch: Dispatch) => {
     try{
-        debugger
-    }catch (e){
-        if (axios.isAxiosError(e)){
-            handleServerNetworkError(e.message,dispatch)
+        const res = await authAPI.authMe()
+        if(res.status === 200){
+            dispatch(setAppInitializedAC(true));
         }
-    }
-    finally{
-        dispatch(setAppInitializedAC(true))
+    }catch (e){
+        dispatch(setAppInitializedAC(false));
     }
 }
+
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type InitialStateType = {
     status: RequestStatusType

@@ -1,27 +1,29 @@
-import {faJs} from "@fortawesome/free-brands-svg-icons"
-import {faArrowRightFromBracket, faHouseLaptop, faPen} from "@fortawesome/free-solid-svg-icons"
+import {faArrowRightFromBracket, faPen} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {Button, TextField} from "@mui/material"
 import {useEffect, useState} from "react"
-import {connect, useSelector} from "react-redux"
-import {authAPI} from "../../app/api"
+import {useSelector} from "react-redux"
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer"
-import {useAppDispatch} from "../../common/hooks/react-redux-hooks"
-import {authTC, logOutTC,  updateNameTC} from "./auth-reducer"
+import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hooks"
+import {logOutTC,  updateNameTC} from "./auth-reducer"
 import s from './Profile.module.css'
 
-import {AppRootStateType} from "../../app/store";
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import React from "react";
+import {initializeAppTC} from "../../app/app-reducer";
 
-const Profile = (props: any) => {
+const Profile = () => {
+
+
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
+
 
     const nameAuth = useSelector((state: any) => state.auth.name)
     const email = useSelector((state: any) => state.auth.email)
 
-    const [name, setName] = useState(props.nameAuth)
+    const [name, setName] = useState('name')
     const [editmode, setEditMode] = useState(false)
 
     const setNameHandler = (e: any) => {
@@ -30,20 +32,27 @@ const Profile = (props: any) => {
     const updateStatusHandler = () => {
         setEditMode(false)
         dispatch(updateNameTC(name))
-
     }
+    useEffect(() => {
+        dispatch(initializeAppTC())
+
+    }, [])
+
+    let isLoggedIn=useAppSelector(state=>state.app.isInitialized)
+
 
     useEffect(() => {
-        dispatch(authTC())
-        setName(nameAuth)
-    }, [])
+        if (!isLoggedIn) {
+            navigate('/login')
+        }
+    }, [isLoggedIn])
 
     return (
         <div className={s.container}>
             <BoxContainer title={'Personal Information'}>
                 <div className={s.profile}>
                     <div className={s.img}>
-                        <img
+                        <img alt='image'
                             src="https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg"/>
                     </div>
                     <div onDoubleClick={() => setEditMode(true)}>
@@ -67,18 +76,6 @@ const Profile = (props: any) => {
         </div>
     )
 }
-/*const Profile=(props:any)=> {
-    const dispatch=useAppDispatch()
-    const isLoggedIn=useSelector<AppRootStateType,boolean>(state=>state.app.isInitialized)
-    if (isLoggedIn===false){
-        return <Navigate to={'/login'}/>
-    }
-        return(
-            <div>
-                <p>{props.profile}</p>
-                <button onClick={()=>dispatch(logOutTC())}> logout</button>
-            </div>
-        )
-}*/
+
 
 export default Profile;

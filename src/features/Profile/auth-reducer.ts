@@ -53,13 +53,11 @@ let authReducer = (state = initialState, action: actionsType) => {
 
     switch (action.type) {
         case SET_USER_DATA:
-            debugger
             return {
                 ...state,
                 ...action.payload,
             }
         case CHANGE_USER_NAME:
-            debugger
             return {
                 ...state,
                 name: action.name,
@@ -154,11 +152,8 @@ export const logOutTC = () => {
 
 export const updateNameTC = (name: string) => {
     return (dispatch: Dispatch<AnyAction>) => {
-        debugger
         return authAPI.updateName(name).then(response => {
-
             dispatch(updateNameAC(name))
-
         })
     }
 }

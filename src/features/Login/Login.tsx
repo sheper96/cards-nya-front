@@ -1,20 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import TextField from '@mui/material/TextField';
+import TextField from '@material-ui/core/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import {loginTC} from "./login-reducer";
-import {useAppDispatch} from "../../common/hooks/react-redux-hooks";
+import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hooks";
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import s from './login.module.css'
-import {LinearProgress} from "@mui/material";
-import {Navigate} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {AppRootStateType} from "../../app/store";
-import {RequestStatusType} from "../../app/app-reducer";
+import {useNavigate} from "react-router-dom";
+import {Link} from "@mui/material";
+import Box from '@material-ui/core/Box';
+
 
 type FormikErrorType = {
     email?: string
@@ -22,8 +21,9 @@ type FormikErrorType = {
     rememberMe?: string
 }
 export const Login = () => {
-    const isLoggedIn=useSelector<AppRootStateType,boolean>(state=>state.app.isInitialized)
+   // const isLoggedIn = useSelector<AppRootStateType, boolean || null>(state => state.app.isInitialized)
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -49,9 +49,14 @@ export const Login = () => {
         }
 
     })
-    if (isLoggedIn){
-        return <Navigate to={'/'}/>
-    }
+    let isLoggedIn=useAppSelector(state=>state.app.isInitialized)
+
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/profile')
+        }
+    }, [isLoggedIn])
     return (<div className={s.container}>
         <BoxContainer title={'Sing in'} subTextForm={'Already have an account?'} subLinkUrlText={'Sign up'}
                       subLinkUrl={'/registration'}>
@@ -78,8 +83,14 @@ export const Login = () => {
                                    {...formik.getFieldProps('password')} type="password" label="Password"
                                    margin="normal"
                         />
-                        <FormControlLabel {...formik.getFieldProps('rememberMe')} label={'Remember me'}
-                                          control={<Checkbox/>}/>
+                        <Box className={s.row}>
+                            <FormControlLabel {...formik.getFieldProps('rememberMe')} label={'Remember me'}
+                                              control={<Checkbox/>}/>
+
+                            <Link href="/forgot" underline="hover">
+                                Forgot Password?
+                            </Link>
+                        </Box>
                         <Button className='button' type={'submit'} variant={'contained'} color={'primary'}>
                             Sign in
                         </Button>

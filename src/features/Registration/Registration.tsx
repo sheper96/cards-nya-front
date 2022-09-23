@@ -4,13 +4,12 @@ import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import {useFormik} from "formik";
 import {Button, FormGroup, IconButton, InputAdornment} from "@mui/material";
 import TextField from '@material-ui/core/TextField';
-/*import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';*/
 
 import {font} from "../../app/App";
 import s from './Registration.module.css'
 import {useAppDispatch} from "../../common/hooks/react-redux-hooks";
 import {registerTC} from "./registration-reducer";
+import {Visibility, VisibilityOff} from '@mui/icons-material';
 
 type FormikErrorType = {
     email?: string
@@ -63,7 +62,6 @@ const Registration = () => {
         event.preventDefault();
     };
 
-
     return (
         <div className={s.container}>
             <BoxContainer title={'Sing in'} subTextForm={'Already have an account?'} subLinkUrlText={'Sign In'} subLinkUrl={'/login'} >
@@ -108,7 +106,7 @@ const Registration = () => {
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
                                         >
-                                  {/*       //   {isShowPassword ? <VisibilityOff/> : <Visibility/>}*/}
+                                           {isShowPassword ? <VisibilityOff/> : <Visibility/>}
                                         </IconButton>
                                     </InputAdornment>
                             }}
@@ -137,7 +135,7 @@ const Registration = () => {
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
                                         >
-                            {/*             //   {isShowPassword ? <VisibilityOff/> : <Visibility/>}*/}
+                                            {isShowPassword ? <VisibilityOff/> : <Visibility/>}
                                         </IconButton>
                                     </InputAdornment>
                             }}
