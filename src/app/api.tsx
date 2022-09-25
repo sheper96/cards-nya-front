@@ -29,7 +29,7 @@ export const authAPI = {
     authMe() {
         return instance.post('auth/me');
     },
-    updateName(name:string) {
+    updateName(name:string | null) {
         return instance.put('auth/me', {name:name ,avatar: ''});
     },
     login(data: loginParamsType) {

@@ -39,7 +39,6 @@ function App() {
             <div className={s.app}>
                 <Header/>
                 <Routes>
-                    <Route path={'/'} element={<Profile/>}></Route>
                     <Route path={'/login'} element={<Login/>}></Route>
                     <Route path={'/profile'} element={<Profile/>}></Route>
                     <Route path={'/registration'} element={<Registration/>}></Route>

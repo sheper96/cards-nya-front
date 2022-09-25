@@ -5,7 +5,7 @@ import {useEffect, useState} from "react"
 import {useSelector} from "react-redux"
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer"
 import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hooks"
-import {logOutTC,  updateNameTC} from "./auth-reducer"
+import {authTC, logOutTC,  updateNameTC} from "./auth-reducer"
 import s from './Profile.module.css'
 
 import {useNavigate} from "react-router-dom";
@@ -13,17 +13,14 @@ import React from "react";
 import {initializeAppTC} from "../../app/app-reducer";
 
 const Profile = () => {
-
-
-
+    
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
+    
+    let nameAuth=useAppSelector(state=>state.auth.name)
+    let email=useAppSelector(state=>state.auth.email)
 
-
-    const nameAuth = useSelector((state: any) => state.auth.name)
-    const email = useSelector((state: any) => state.auth.email)
-
-    const [name, setName] = useState('name')
+    const [name, setName] = useState(nameAuth)
     const [editmode, setEditMode] = useState(false)
 
     const setNameHandler = (e: any) => {
@@ -34,19 +31,18 @@ const Profile = () => {
         dispatch(updateNameTC(name))
     }
     useEffect(() => {
-        dispatch(initializeAppTC())
+        dispatch(authTC())
 
     }, [])
 
     let isLoggedIn=useAppSelector(state=>state.app.isInitialized)
 
-
-    useEffect(() => {
+    /*useEffect(() => {
         if (!isLoggedIn) {
             navigate('/login')
         }
     }, [isLoggedIn])
-
+*/
     return (
         <div className={s.container}>
             <BoxContainer title={'Personal Information'}>

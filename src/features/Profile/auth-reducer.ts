@@ -10,7 +10,7 @@ export type authType={
     email: null | string,
     rememberMe: null | boolean,
     isAdmin: null | boolean,
-    name: null | string,
+    name: string | null ,
     verified: null | boolean,
     publicCardPacksCount: null | number,
     created: any,
@@ -94,7 +94,7 @@ export const setUserDataAC = (_id: any, email: any, rememberMe: any, isAdmin: an
     }
 }
 
-export const updateNameAC = (name: string) => {
+export const updateNameAC = (name: string | null) => {
     debugger
     return {
         type: CHANGE_USER_NAME,
@@ -150,7 +150,7 @@ export const logOutTC = () => {
     }
 }
 
-export const updateNameTC = (name: string) => {
+export const updateNameTC = (name: string | null) => {
     return (dispatch: Dispatch<AnyAction>) => {
         return authAPI.updateName(name).then(response => {
             dispatch(updateNameAC(name))
