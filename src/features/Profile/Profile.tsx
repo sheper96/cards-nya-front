@@ -5,44 +5,38 @@ import {useEffect, useState} from "react"
 import {useSelector} from "react-redux"
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer"
 import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hooks"
-import {authTC, logOutTC,  updateNameTC} from "./auth-reducer"
 import s from './Profile.module.css'
-
 import {useNavigate} from "react-router-dom";
 import React from "react";
 import {initializeAppTC} from "../../app/app-reducer";
+import {logOutTC, updateUserInfoTC } from "../Login/auth-reducer"
 
 const Profile = () => {
     
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
     
-    let nameAuth=useAppSelector(state=>state.auth.name)
-    let email=useAppSelector(state=>state.auth.email)
+    let nameAuth=useAppSelector(state=>state.auth.userInfo?.name)
+    let email=useAppSelector(state=>state.auth.userInfo?.email)
 
     const [name, setName] = useState(nameAuth)
     const [editmode, setEditMode] = useState(false)
 
-    const setNameHandler = (e: any) => {
+    const setNameHandler = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setName(e.currentTarget.value)
     }
     const updateStatusHandler = () => {
         setEditMode(false)
-        dispatch(updateNameTC(name))
+        dispatch(updateUserInfoTC({name: name, avatar: ''}))
     }
-    useEffect(() => {
-        dispatch(authTC())
-
-    }, [])
 
     let isLoggedIn=useAppSelector(state=>state.app.isInitialized)
-
-    /*useEffect(() => {
+    
+    useEffect(() => {
         if (!isLoggedIn) {
             navigate('/login')
         }
     }, [isLoggedIn])
-*/
     return (
         <div className={s.container}>
             <BoxContainer title={'Personal Information'}>

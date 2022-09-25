@@ -3,8 +3,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Button from '@mui/material/Button'
 import s from './Header.module.css'
 import logo from '../../../assets/images/logo.svg'
-import { authTC, logOutTC } from '../../../features/Profile/auth-reducer'
-import { useAppDispatch } from '../../hooks/react-redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/react-redux-hooks'
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../../app/store";
 import {RequestStatusType} from "../../../app/app-reducer";
@@ -16,18 +15,19 @@ const Header = () => {
     const dispatch = useAppDispatch()
     
     const logedIn = useSelector((state: any) => state.auth.logedIn)
-    const nameAuth = useSelector((state: any) => state.auth.name)
+    const name = useAppSelector(state=>state.auth.userInfo?.name)
     
-
+    const initialized = useAppSelector(state=>state.app.isInitialized)
+    
     return (
         <AppBar color="inherit" position="static">
             <Toolbar>
                 <Box className={s.box} px={10} width="100%">
                     <img src={logo} alt="logo"/>
-                    {logedIn ? 
+                    {initialized ? 
                         <div className={s.button}>
                             <div className={s.name}>
-                                <h3>{nameAuth}</h3>
+                                <h3>{name}</h3>
                             </div>
                             <div className={s.img}>
                                 <img

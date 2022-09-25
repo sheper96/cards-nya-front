@@ -6,13 +6,13 @@ import FormGroup from '@mui/material/FormGroup';
 import TextField from '@material-ui/core/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
-import {loginTC} from "./login-reducer";
 import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hooks";
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import s from './login.module.css'
 import {useNavigate} from "react-router-dom";
 import {Link} from "@mui/material";
 import Box from '@material-ui/core/Box';
+import { loginTC } from './auth-reducer';
 
 
 type FormikErrorType = {
@@ -39,8 +39,6 @@ export const Login = () => {
             if (values.password.length <= 7) {
                 errors.password = 'Password mast be 8 symbol'
             }
-
-
             return errors
         },
         onSubmit: values => {

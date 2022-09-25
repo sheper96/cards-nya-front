@@ -1,5 +1,6 @@
 import axios, {AxiosError} from "axios";
 import {Dispatch} from "redux";
+import { authAPI } from "../../app/api";
 import { setAppStatusAC } from "../../app/app-reducer";
 import {handleServerNetworkError} from "../../common/utils/utils";
 
@@ -19,6 +20,7 @@ export function isAxiosError<ResponseType>(error: unknown): error is AxiosError<
 export const registerTC = (data: registerParamsType) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
+        const res = await authAPI.register(data)
         window.location.href = '/login'
     }catch (error: unknown) {
         if (isAxiosError<MyExpectedResponseType>(error)) {

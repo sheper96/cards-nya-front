@@ -30,10 +30,10 @@ const theme = createTheme({
 });
 
 function App() {
-    const dispatch = useAppDispatch()
+  /*  const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(initializeAppTC())
-    }, [])
+    }, [])*/
     return (
         <ThemeProvider theme={theme}>
             <div className={s.app}>
