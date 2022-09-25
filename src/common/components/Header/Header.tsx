@@ -14,9 +14,7 @@ const Header = () => {
 
     const dispatch = useAppDispatch()
     
-    const logedIn = useSelector((state: any) => state.auth.logedIn)
     const name = useAppSelector(state=>state.auth.userInfo?.name)
-    
     const initialized = useAppSelector(state=>state.app.isInitialized)
     
     return (

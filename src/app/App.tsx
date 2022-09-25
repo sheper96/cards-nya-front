@@ -13,9 +13,7 @@ import { Login } from '../features/Login/Login';
 import Profile from '../features/Profile/Profile';
 import {initializeAppTC} from "./app-reducer";
 import {useAppDispatch} from "../common/hooks/react-redux-hooks";
-
-
-
+import ForgotPassword from '../features/ForgotPassword/ForgotPassword';
 
 export const font = "'Montserrat', sans-serif";
 const theme = createTheme({
@@ -30,10 +28,10 @@ const theme = createTheme({
 });
 
 function App() {
-  /*  const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(initializeAppTC())
-    }, [])*/
+    }, [])
     return (
         <ThemeProvider theme={theme}>
             <div className={s.app}>
@@ -43,6 +41,7 @@ function App() {
                     <Route path={'/profile'} element={<Profile/>}></Route>
                     <Route path={'/registration'} element={<Registration/>}></Route>
                     <Route path={'/newpassword'} element={<NewPassword/>}></Route>
+                    <Route path={'/forgotpassword'} element={<ForgotPassword/>}></Route>
                 </Routes>
             </div>
             <Snackbars/>
