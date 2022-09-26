@@ -15,6 +15,7 @@ import {initializeAppTC} from "./app-reducer";
 import {useAppDispatch} from "../common/hooks/react-redux-hooks";
 import ForgotPassword from '../features/ForgotPassword/ForgotPassword';
 import { CheckEmail } from '../features/ForgotPassword/CheckEmail';
+import { SetNewPassword } from '../features/ForgotPassword/SetNewPassword';
 
 export const font = "'Montserrat', sans-serif";
 const theme = createTheme({
@@ -44,6 +45,7 @@ function App() {
                     <Route path={'/newpassword'} element={<NewPassword/>}></Route>
                     <Route path={'/forgotpassword'} element={<ForgotPassword/>}></Route>
                     <Route path={'/checkemail'} element={<CheckEmail/>}></Route>
+                    <Route path={'/set-new-password/:token'} element={<SetNewPassword/>}></Route>
                 </Routes>
             </div>
             <Snackbars/>

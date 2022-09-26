@@ -32,7 +32,7 @@ const ForgotPassword = () => {
             from: "test",
             message: `<div style="background-color: lime; padding: 15px">
                         password recovery link: 
-                        <a href='http://localhost:3000/#/set-new-password/$token$'>
+                        <a href='http://localhost:3000/set-new-password/$token$'>
                         link</a>
                       </div>`
         },
@@ -64,7 +64,7 @@ const ForgotPassword = () => {
             <BoxContainer
                 title={'Forgot your password?'} subTextForm={'Did you remember your password?'}
                 subLinkUrlText={'Try logging in'}
-                subLinkUrl={'/registration'}>
+                subLinkUrl={'/login'}>
                 <form onSubmit={formik.handleSubmit}>
                     <FormGroup>
                         <TextField

@@ -29,6 +29,9 @@ export const authAPI = {
     },
     forgotPassword(data:ForgotType) {
         return herokuInstance.post('auth/forgot' ,data);
+    },
+    setNewPassword(data:SetNewPasswordType) {
+        return herokuInstance.post('auth/set-new-password' ,data);
     }
 }
 
@@ -36,6 +39,11 @@ export type ForgotType = {
     email:string
     from:string
     message:string
+}
+
+export type SetNewPasswordType = {
+    password:string
+    resetPasswordToken:string |undefined
 }
 
 export type UpdateUserNameType = {

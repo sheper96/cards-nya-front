@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {authAPI, ForgotType, loginParamsType, UpdateUserNameType} from "../../app/api";
+import {authAPI, ForgotType, loginParamsType, SetNewPasswordType, UpdateUserNameType} from "../../app/api";
 import {handleServerNetworkError} from "../../common/utils/utils";
 import {isAxiosError} from "../Registration/registration-reducer";
 import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-reducer";
@@ -120,6 +120,16 @@ export const forgotPasswordTC = (data: ForgotType) => async (dispatch: Dispatch)
         const res = await authAPI.forgotPassword(data)
         dispatch(setForgottenEmailAC(data.email))
         dispatch(setIsPasswordReset(true))
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+
+export const setNewPasswordTC = (data: SetNewPasswordType) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const res = await authAPI.setNewPassword(data)
+        dispatch(setIsPasswordReset(false))
     } finally {
         dispatch(setAppStatusAC('succeeded'))
     }
