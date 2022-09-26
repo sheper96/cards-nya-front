@@ -1,17 +1,22 @@
 import {Button, FormGroup, TextField} from '@mui/material';
-import React, {ChangeEventHandler, useState} from 'react';
+import React, {ChangeEventHandler, useEffect, useState} from 'react';
 import BoxContainer from '../../common/components/BoxContainer/BoxContainer';
 import s from './ForgotPassword.module.css'
 import {useFormik} from "formik";
 import {font} from '../../app/App';
 import {authAPI} from '../../app/api';
 import {forgotPasswordTC} from '../Login/auth-reducer';
-import {useAppDispatch} from '../../common/hooks/react-redux-hooks';
+import {useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from '../../common/hooks/react-redux-hooks';
 
 const ForgotPassword = () => {
+   
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate();
 
     const [text, setText] = useState("")
-    const dispatch = useAppDispatch()
+    
+    const isPasswordReset = useAppSelector(state=>state.auth.isPasswordReset)
 
     const emailHandler = (e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setText(e.currentTarget.value)
@@ -42,16 +47,18 @@ const ForgotPassword = () => {
             return errors
         },
         onSubmit: values => {
-            console.log("works")
             dispatch(forgotPasswordTC(values))
             formik.resetForm();
         },
     });
 
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-    };
-
+    useEffect(() => {
+        if (isPasswordReset) {
+            navigate('/checkemail')
+        }
+    }, [isPasswordReset])
+    
+    
     return (
         <div className={s.container}>
             <BoxContainer

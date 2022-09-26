@@ -9,7 +9,9 @@ export type signInType = {
     email: string,
     password: string,
     rememberMe: boolean,
-    userInfo?: UserProfileType | null
+    userInfo?: UserProfileType | null,
+    forgottenEmail: string | null,
+    isPasswordReset:boolean
 }
 type MyExpectedResponseType = {
     error: string;
@@ -23,26 +25,31 @@ export type UserProfileType = {
     created: Date;
     updated: Date;
     isAdmin: boolean;
-    verified: boolean; 
+    verified: boolean;
     rememberMe: boolean;
     error?: string;
 }
-type setUserInfoActionCreator = ReturnType<typeof setUserInfoAC>
-type actionsType = setUserInfoActionCreator
+type actionsType = ReturnType<typeof setUserInfoAC> |
+    ReturnType<typeof setForgottenEmailAC> |
+    ReturnType<typeof setIsPasswordReset> 
 
 const initialState: signInType = {
     email: '',
     password: '',
     rememberMe: false,
-    userInfo: null as UserProfileType | null
+    isPasswordReset:false,
+    forgottenEmail: null as string | null,
+    userInfo: null as UserProfileType | null,
 }
 let authReducer = (state = initialState, action: actionsType) => {
 
     switch (action.type) {
         case "AUTH/SET-USER-INFO":
-            debugger
             return {...state, userInfo: action.userInfo}
-
+        case "AUTH/SET-FORGOTTEN-EMAIL":
+            return {...state, forgottenEmail: action.forgottenEmail}
+        case "AUTH/SET-RESET-PASSWORD":
+            return {...state, isPasswordReset: action.isPasswordReset}
         default :
             return state
     }
@@ -51,8 +58,13 @@ let authReducer = (state = initialState, action: actionsType) => {
 //Action Creators
 
 export const setUserInfoAC = (userProfile: UserProfileType) => {
-    debugger
     return {type: "AUTH/SET-USER-INFO", userInfo: userProfile} as const
+}
+export const setForgottenEmailAC = (forgottenEmail: string) => {
+    return {type: "AUTH/SET-FORGOTTEN-EMAIL", forgottenEmail:forgottenEmail} as const
+}
+export const setIsPasswordReset = (isPasswordReset: boolean) => {
+    return {type: "AUTH/SET-RESET-PASSWORD", isPasswordReset:isPasswordReset} as const
 }
 
 //Thunk Creators
@@ -91,7 +103,7 @@ export const logOutTC = () => async (dispatch: Dispatch) => {
     }
 }
 
-export const updateUserInfoTC = (data: UpdateUserNameType ) => async (dispatch: Dispatch) => {
+export const updateUserInfoTC = (data: UpdateUserNameType) => async (dispatch: Dispatch) => {
     debugger
     dispatch(setAppStatusAC("loading"))
     try {
@@ -102,10 +114,12 @@ export const updateUserInfoTC = (data: UpdateUserNameType ) => async (dispatch: 
     }
 }
 
-export const forgotPasswordTC = (data: ForgotType ) => async (dispatch: Dispatch) => {
+export const forgotPasswordTC = (data: ForgotType) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC("loading"))
     try {
         const res = await authAPI.forgotPassword(data)
+        dispatch(setForgottenEmailAC(data.email))
+        dispatch(setIsPasswordReset(true))
     } finally {
         dispatch(setAppStatusAC('succeeded'))
     }

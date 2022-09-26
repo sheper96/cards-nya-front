@@ -14,14 +14,13 @@ import {Link} from "@mui/material";
 import Box from '@material-ui/core/Box';
 import { loginTC } from './auth-reducer';
 
-
 type FormikErrorType = {
     email?: string
     password?: string
     rememberMe?: string
 }
+
 export const Login = () => {
-   // const isLoggedIn = useSelector<AppRootStateType, boolean || null>(state => state.app.isInitialized)
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const formik = useFormik({
@@ -37,7 +36,7 @@ export const Login = () => {
                 errors.email = 'Invalid email address';
             }
             if (values.password.length <= 7) {
-                errors.password = 'Password mast be 8 symbol'
+                errors.password = 'Password must be 8 symbol'
             }
             return errors
         },
@@ -85,7 +84,7 @@ export const Login = () => {
                             <FormControlLabel {...formik.getFieldProps('rememberMe')} label={'Remember me'}
                                               control={<Checkbox/>}/>
 
-                            <Link href="/forgot" underline="hover">
+                            <Link href="/forgotpassword" underline="hover">
                                 Forgot Password?
                             </Link>
                         </Box>
