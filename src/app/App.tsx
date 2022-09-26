@@ -7,8 +7,6 @@ import {createTheme} from '@mui/material/styles'
 import {ThemeProvider} from "@mui/material";
 import {Snackbars} from "../common/snackbars/Snackbars";
 import {ErrorSnackbar} from "../common/components/ErrorSnackBar/ErrorSnackBat";
-import {NewPassword} from "../features/NewPassword/NewPassword";
-
 import { Login } from '../features/Login/Login';
 import Profile from '../features/Profile/Profile';
 import {initializeAppTC} from "./app-reducer";
@@ -42,7 +40,6 @@ function App() {
                     <Route path={'/login'} element={<Login/>}></Route>
                     <Route path={'/profile'} element={<Profile/>}></Route>
                     <Route path={'/registration'} element={<Registration/>}></Route>
-                    <Route path={'/newpassword'} element={<NewPassword/>}></Route>
                     <Route path={'/forgotpassword'} element={<ForgotPassword/>}></Route>
                     <Route path={'/checkemail'} element={<CheckEmail/>}></Route>
                     <Route path={'/set-new-password/:token'} element={<SetNewPassword/>}></Route>
