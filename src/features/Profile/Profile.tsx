@@ -10,6 +10,7 @@ import {useNavigate} from "react-router-dom";
 import React from "react";
 import {initializeAppTC} from "../../app/app-reducer";
 import {logOutTC, updateUserInfoTC } from "../Login/auth-reducer"
+import { authAPI } from "../../app/api"
 
 const Profile = () => {
     
@@ -18,6 +19,8 @@ const Profile = () => {
     
     let nameAuth=useAppSelector(state=>state.auth.userInfo?.name)
     let email=useAppSelector(state=>state.auth.userInfo?.email)
+    let isLoggedIn=useAppSelector(state=>state.auth.isLoggedIn)
+
 
     const [name, setName] = useState(nameAuth)
     const [editmode, setEditMode] = useState(false)
@@ -30,8 +33,6 @@ const Profile = () => {
         dispatch(updateUserInfoTC({name: name, avatar: ''}))
     }
 
-    let isLoggedIn=useAppSelector(state=>state.app.isInitialized)
-    
     useEffect(() => {
         if (!isLoggedIn) {
             navigate('/login')
@@ -41,6 +42,7 @@ const Profile = () => {
         <div className={s.container}>
             <BoxContainer title={'Personal Information'}>
                 <div className={s.profile}>
+                    <button onClick={()=>dispatch(initializeAppTC())}>auth me </button>
                     <div className={s.img}>
                         <img alt='image'
                             src="https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg"/>

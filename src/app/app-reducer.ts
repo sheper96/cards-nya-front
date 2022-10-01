@@ -1,4 +1,5 @@
-import { Dispatch } from "redux"
+import {Dispatch} from "redux"
+import {setLogInAC, setUserInfoAC} from "../features/Login/auth-reducer";
 import {authAPI} from "./api";
 
 
@@ -6,7 +7,8 @@ const initialState: InitialStateType = {
     status: 'idle',
     error: null,
     modaltype: null,
-    isInitialized: false
+    isInitialized: false,
+   
 }
 
 export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -19,6 +21,7 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
             return {...state, isInitialized: action.value}
         case 'APP/SET-TYPE':
             return {...state, modaltype: action.modaltype}
+      
         default:
             return {...state}
     }
@@ -26,13 +29,15 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 
 
 export const initializeAppTC = () => async (dispatch: Dispatch) => {
-    try{
+    try {
         const res = await authAPI.authMe()
-        if(res.status === 200){
-            dispatch(setAppInitializedAC(true));
-        }
-    }catch (e){
+        dispatch(setLogInAC(true))
+        dispatch(setUserInfoAC(res.data))
+
+    } catch (e) {
         dispatch(setAppInitializedAC(false));
+    } finally {
+        dispatch(setAppInitializedAC(true));
     }
 }
 
@@ -41,7 +46,7 @@ export type InitialStateType = {
     status: RequestStatusType
     error: string | null,
     modaltype: string | null,
-    isInitialized : boolean
+    isInitialized: boolean
 }
 
 export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
@@ -59,3 +64,5 @@ type ActionsType =
     | SetAppStatusActionType
     | setAppInitializedtionType
     | setAppType
+
+

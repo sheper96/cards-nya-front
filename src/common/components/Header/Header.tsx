@@ -8,6 +8,7 @@ import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../../app/store";
 import {RequestStatusType} from "../../../app/app-reducer";
 import { Box, LinearProgress } from '@mui/material'
+import { Navigate, NavLink } from 'react-router-dom'
 
 const Header = () => {
     const isOpen=useSelector<AppRootStateType,RequestStatusType>(state=>state.app.status)
@@ -21,6 +22,7 @@ const Header = () => {
         <AppBar color="inherit" position="static">
             <Toolbar>
                 <Box className={s.box} px={10} width="100%">
+                    <NavLink to={'packs'}>Pack</NavLink>
                     <img src={logo} alt="logo"/>
                     {initialized ? 
                         <div className={s.button}>

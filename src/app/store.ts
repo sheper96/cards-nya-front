@@ -3,11 +3,13 @@ import thunk, {ThunkDispatch} from "redux-thunk";
 import authReducer from "../features/Login/auth-reducer";
 import profileReducer from "../features/Profile/profile-reducer";
 import {appReducer} from "./app-reducer";
+import cardsPackReducer from "../features/CardsPack/cards-pack-reducer";
 
 const rootReducer = combineReducers({
   profilePage : profileReducer,
   app: appReducer,
-  auth:authReducer
+  auth:authReducer,
+  cards:cardsPackReducer
 })
 
 

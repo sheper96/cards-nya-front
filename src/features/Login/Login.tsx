@@ -46,7 +46,7 @@ export const Login = () => {
         }
 
     })
-    let isLoggedIn=useAppSelector(state=>state.app.isInitialized)
+    let isLoggedIn=useAppSelector(state=>state.auth.isLoggedIn)
 
 
     useEffect(() => {

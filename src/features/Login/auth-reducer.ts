@@ -9,9 +9,10 @@ export type signInType = {
     email: string,
     password: string,
     rememberMe: boolean,
+    isLoggedIn: boolean,
     userInfo?: UserProfileType | null,
     forgottenEmail: string | null,
-    isPasswordReset:boolean
+    isPasswordReset: boolean
 }
 type MyExpectedResponseType = {
     error: string;
@@ -31,13 +32,15 @@ export type UserProfileType = {
 }
 type actionsType = ReturnType<typeof setUserInfoAC> |
     ReturnType<typeof setForgottenEmailAC> |
-    ReturnType<typeof setIsPasswordReset> 
+    ReturnType<typeof setIsPasswordReset> |
+    ReturnType<typeof setLogInAC>
 
 const initialState: signInType = {
     email: '',
     password: '',
     rememberMe: false,
-    isPasswordReset:false,
+    isLoggedIn: false,
+    isPasswordReset: false,
     forgottenEmail: null as string | null,
     userInfo: null as UserProfileType | null,
 }
@@ -50,6 +53,8 @@ let authReducer = (state = initialState, action: actionsType) => {
             return {...state, forgottenEmail: action.forgottenEmail}
         case "AUTH/SET-RESET-PASSWORD":
             return {...state, isPasswordReset: action.isPasswordReset}
+        case 'AUTH/SET-LOGGED_IN_OUT':
+            return {...state, isLoggedIn: action.isLoggedIn}
         default :
             return state
     }
@@ -61,11 +66,12 @@ export const setUserInfoAC = (userProfile: UserProfileType) => {
     return {type: "AUTH/SET-USER-INFO", userInfo: userProfile} as const
 }
 export const setForgottenEmailAC = (forgottenEmail: string) => {
-    return {type: "AUTH/SET-FORGOTTEN-EMAIL", forgottenEmail:forgottenEmail} as const
+    return {type: "AUTH/SET-FORGOTTEN-EMAIL", forgottenEmail: forgottenEmail} as const
 }
 export const setIsPasswordReset = (isPasswordReset: boolean) => {
-    return {type: "AUTH/SET-RESET-PASSWORD", isPasswordReset:isPasswordReset} as const
+    return {type: "AUTH/SET-RESET-PASSWORD", isPasswordReset: isPasswordReset} as const
 }
+export const setLogInAC = (isLoggedIn: boolean) => ({type: 'AUTH/SET-LOGGED_IN_OUT', isLoggedIn} as const)
 
 //Thunk Creators
 
@@ -75,7 +81,7 @@ export const loginTC = (data: loginParamsType) => async (dispatch: Dispatch) => 
         const res = await authAPI.login(data)
         if (res) {
             dispatch(setUserInfoAC(res.data))
-            dispatch(setAppInitializedAC(true))
+            dispatch(setLogInAC(true))
         }
     } catch (error: unknown) {
         dispatch(setAppStatusAC('failed'))
@@ -97,8 +103,7 @@ export const loginTC = (data: loginParamsType) => async (dispatch: Dispatch) => 
 export const logOutTC = () => async (dispatch: Dispatch) => {
     try {
         const res = await authAPI.logOut()
-        dispatch(setAppInitializedAC(false))
-        console.log(res)
+        dispatch(setLogInAC(false))
     } catch (error: unknown) {
     }
 }

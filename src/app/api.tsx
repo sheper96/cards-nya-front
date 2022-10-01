@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const instance = axios.create({
-  //  baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
+   /*baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/' ,*/
     baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',
     withCredentials: true,
 })
@@ -35,6 +35,27 @@ export const authAPI = {
     }
 }
 
+export const cardPacksAPI = {
+    getCardPAcks() {
+        return instance.get('cards/pack');
+    },
+    addCardPack(data:AddCardPackType) {
+        return instance.post('cards/pack' ,data);
+    },
+    updateCardPack(data:UpdateCardPackType) {
+        return instance.put('cards/pack', data);
+    },
+    deleteCardPack() {
+        return instance.delete('cards/pack?id=6334cd323f379e2a78a1d897');
+    },
+}
+export const cardsAPI = {
+    getCards(id:string) {
+        return instance.get(`cards/card?cardsPack_id=${id} `);
+    },
+
+}
+
 export type ForgotType = {
     email:string
     from:string
@@ -61,3 +82,18 @@ export type loginParamsType={
     rememberMe:boolean
 }
 
+//card pack API type
+
+export type AddCardPackType={
+    name : string
+    deckCover? : string
+    private? : boolean
+}
+
+export type UpdateCardPackType={
+    name : string
+    _id : string
+}
+
+//968b9390-40a3-11ed-a346-336d45d0120e
+//968c56e0-40a3-11ed-a346-336d45d0120e
