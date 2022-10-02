@@ -22,7 +22,7 @@ const Header = () => {
         <AppBar color="inherit" position="static">
             <Toolbar>
                 <Box className={s.box} px={10} width="100%">
-                    <NavLink to={'packs'}>Pack</NavLink>
+                   {/* <NavLink to={'packs'}>Pack</NavLink>*/}
                     <img src={logo} alt="logo"/>
                     {initialized ? 
                         <div className={s.button}>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const instance = axios.create({
-   /*baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/' ,*/
+    /*baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/' ,*/
     baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',
     withCredentials: true,
 })
@@ -12,13 +12,13 @@ const herokuInstance = axios.create({
 })
 
 export const authAPI = {
-    register(data:registerParamsType) {
+    register(data: registerParamsType) {
         return instance.post('auth/register', data);
     },
     authMe() {
         return instance.post('auth/me');
     },
-    updateName(data:UpdateUserNameType) {
+    updateName(data: UpdateUserNameType) {
         return instance.put('auth/me', data);
     },
     login(data: loginParamsType) {
@@ -27,22 +27,25 @@ export const authAPI = {
     logOut() {
         return instance.delete('auth/me');
     },
-    forgotPassword(data:ForgotType) {
-        return herokuInstance.post('auth/forgot' ,data);
+    forgotPassword(data: ForgotType) {
+        return herokuInstance.post('auth/forgot', data);
     },
-    setNewPassword(data:SetNewPasswordType) {
-        return herokuInstance.post('auth/set-new-password' ,data);
+    setNewPassword(data: SetNewPasswordType) {
+        return herokuInstance.post('auth/set-new-password', data);
     }
 }
 
 export const cardPacksAPI = {
-    getCardPAcks() {
-        return instance.get('cards/pack');
+    getCardPAcks(pageCount: number, pageNumber: number, min?: number , max?: number , userId?: string ) {
+        if (userId){
+            return instance.get(`cards/pack?pageCount=${pageCount}&page=${pageNumber}&min=${min}&max=${max}&user_id=${userId}`);
+        }
+        else return instance.get(`cards/pack?pageCount=${pageCount}&page=${pageNumber}&min=${min}&max=${max}`);
     },
-    addCardPack(data:AddCardPackType) {
-        return instance.post('cards/pack' ,data);
+    addCardPack(data: AddCardPackType) {
+        return instance.post('cards/pack', data);
     },
-    updateCardPack(data:UpdateCardPackType) {
+    updateCardPack(data: UpdateCardPackType) {
         return instance.put('cards/pack', data);
     },
     deleteCardPack() {
@@ -50,21 +53,21 @@ export const cardPacksAPI = {
     },
 }
 export const cardsAPI = {
-    getCards(id:string) {
+    getCards(id: string) {
         return instance.get(`cards/card?cardsPack_id=${id} `);
     },
 
 }
 
 export type ForgotType = {
-    email:string
-    from:string
-    message:string
+    email: string
+    from: string
+    message: string
 }
 
 export type SetNewPasswordType = {
-    password:string
-    resetPasswordToken:string |undefined
+    password: string
+    resetPasswordToken: string | undefined
 }
 
 export type UpdateUserNameType = {
@@ -72,27 +75,27 @@ export type UpdateUserNameType = {
     avatar: string
 }
 
-export type registerParamsType={
+export type registerParamsType = {
     email: string,
     password: string,
 }
-export type loginParamsType={
+export type loginParamsType = {
     email: string,
     password: string,
-    rememberMe:boolean
+    rememberMe: boolean
 }
 
 //card pack API type
 
-export type AddCardPackType={
-    name : string
-    deckCover? : string
-    private? : boolean
+export type AddCardPackType = {
+    name: string
+    deckCover?: string
+    private?: boolean
 }
 
-export type UpdateCardPackType={
-    name : string
-    _id : string
+export type UpdateCardPackType = {
+    name: string
+    _id: string
 }
 
 //968b9390-40a3-11ed-a346-336d45d0120e
