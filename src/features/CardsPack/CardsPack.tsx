@@ -4,60 +4,67 @@ import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hoo
 import {useEffect, useState} from 'react';
 import {
     Button, ButtonGroup,
+    IconButton,
     Input, Pagination, Paper, Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import PackBoxContainer from '../../common/components/PackBoxContainer/PackBoxContainer';
 import {authAPI} from '../../app/api';
 import {initializeAppTC} from '../../app/app-reducer';
 import {NavLink} from 'react-router-dom';
-
+import {ModalAddNewPack} from '../ModalWidnows/ModalAddNewPack/ModalAddNewPack';
+import {ModalEditPack} from '../ModalWidnows/ModalEditPack/ModalEditPack';
+import {ModalDeletePack} from '../ModalWidnows/ModalDeletePack/ModalDeletePack';
 
 export const CardsPack = () => {
     const dispatch = useAppDispatch()
-    
+
     const packs = useAppSelector((state) => state.cards.cardPackData?.cardPacks)
     const totalCount = useAppSelector((state) => state.cards.cardPackData?.cardPacksTotalCount)
     const userId = useAppSelector((state) => state.auth.userInfo?._id)
+    const [addNewPackActive, setNewPackActive] = useState(false)
+    const [editPackActive, setEditPackActive] = useState(false)
+    const [deletePackActive, setDeletePackActive] = useState(false)
 
-    const [value, setValue] = useState<number[]>([1,9])
+
+    const [value, setValue] = useState<number[]>([1, 9])
     const [page, setPage] = useState(1);
-    const [myCards,setMyCards] = useState<boolean>(false)
+    const [myCards, setMyCards] = useState<boolean>(false)
     const count = Math.ceil(totalCount / 9)
 
     const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
-        dispatch(SetCardPackDataTC(page,value[0],value[1]))
+        dispatch(SetCardPackDataTC(page, value[0], value[1]))
     };
 
     const updateRange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
     };
-    
-    const updateRangePage = ()=>{
-        if (myCards){
-            dispatch(SetCardPackDataTC(1,value[0],value[1],userId))
-        }
-        else {
+
+    const updateRangePage = () => {
+        if (myCards) {
+            dispatch(SetCardPackDataTC(1, value[0], value[1], userId))
+        } else {
             dispatch(SetCardPackDataTC(1, value[0], value[1]))
         }
-    }  
-    const myPacks = ()=>{
-        dispatch(SetCardPackDataTC(1,value[0],value[1],userId))
+    }
+    const myPacks = () => {
+        dispatch(SetCardPackDataTC(1, value[0], value[1], userId))
         setMyCards(true)
     }
-    const allPacks = ()=>{
-        dispatch(SetCardPackDataTC(1,value[0],value[1]))
+    const allPacks = () => {
+        dispatch(SetCardPackDataTC(1, value[0], value[1]))
         setMyCards(false)
     }
-    
+
     useEffect(() => {
         console.log('pack ')
-        dispatch(SetCardPackDataTC(1,value[0],value[1]))
+        dispatch(SetCardPackDataTC(1, value[0], value[1]))
 
     }, [])
-    
+
     return (
         <div className={s.container}>
-            <PackBoxContainer title={"Pack List"} buttonTitle={"Add New Pack"} buttonCallback={() => alert("hi")}>
+            <PackBoxContainer title={"Pack List"} buttonTitle={"Add New Pack"} buttonCallback={()=>setNewPackActive(true)}>
                 <div className={s.workingPanel}>
                     <div className={s.search}>
                         <h3>Search</h3>
@@ -73,8 +80,10 @@ export const CardsPack = () => {
                     </div>
                     <div>
                         <h2>Number of cards</h2>
-                        <Slider value={value} step={1} getAriaLabel={() => 'Default'} max = {10} valueLabelDisplay="auto" onChange={updateRange}/>
-                        <Button onClick={updateRangePage} variant="contained" size="medium" sx={{borderRadius: 7.5 ,mt: 4}}>set range</Button>
+                        <Slider value={value} step={1} getAriaLabel={() => 'Default'} max={10} valueLabelDisplay="auto"
+                                onChange={updateRange}/>
+                        <Button onClick={updateRangePage} variant="contained" size="medium"
+                                sx={{borderRadius: 7.5, mt: 4}}>set range</Button>
                     </div>
                 </div>
                 <TableContainer component={Paper}>
@@ -101,7 +110,13 @@ export const CardsPack = () => {
                                     <TableCell align="right">{p.cardsCount}</TableCell>
                                     <TableCell align="right">{p.updated}</TableCell>
                                     <TableCell align="right">{p.user_name}</TableCell>
-                                    <TableCell align="right">{userId === p.user_id ? <button>delete</button> : <h3>321</h3>}</TableCell>
+                                    <TableCell align="right">{userId === p.user_id
+                                        ? <div>
+                                        <IconButton aria-label="delete" onClick={()=>setDeletePackActive(true)}><DeleteIcon/></IconButton>
+                                         <IconButton aria-label="delete" onClick={()=>setEditPackActive(true)}><DeleteIcon/></IconButton>
+                                        </div>
+                                        : <h3>321</h3>}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -109,7 +124,11 @@ export const CardsPack = () => {
                 </TableContainer>
                 <Pagination count={count} color="primary" onChange={handleChange}/>
             </PackBoxContainer>
+            <ModalAddNewPack addNewPackActive={addNewPackActive} setNewPackActive={setNewPackActive}/>
+            <ModalEditPack editPackActive={editPackActive} setEditPackActive={setEditPackActive}/>
+            <ModalDeletePack deletePackActive={deletePackActive} setDeletePackActive={setDeletePackActive}/>
         </div>
     );
 };
+
 

@@ -4,26 +4,17 @@ import PackBoxContainer from '../../common/components/PackBoxContainer/PackBoxCo
 import { useAppDispatch, useAppSelector } from '../../common/hooks/react-redux-hooks';
 import s from './Card.module.css'
 
-
-
 export const Card = () => {
 
     const cards = useAppSelector((state) => state.cards.cardsData?.cards)
-
-
-    const handleCellClick=()=>{
-        console.log("cell clicked")
-    }
-
+   
     useEffect(() => {
     }, [])
-
-   
     
     const dispatch = useAppDispatch()
     return (
         <div className={s.container}>
-            <PackBoxContainer title={"Pack List"} buttonTitle={"Add New Pack"} buttonCallback={() => alert("hi")}>
+            <PackBoxContainer title={"Pack List"} buttonTitle={"Add New Card"} buttonCallback={() => alert("hi")}>
                 <TableContainer component={Paper}>
                     <Table sx={{minWidth: 650}} aria-label="simple table">
                         <TableHead>
@@ -38,8 +29,7 @@ export const Card = () => {
                             {cards && cards.map((c: any) => (
                                 <TableRow
                                     key={c._id}
-                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                >
+                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                     <TableCell component="th" scope="row" >
                                         {c.question}
                                     </TableCell>
@@ -48,18 +38,6 @@ export const Card = () => {
                                     <TableCell align="right">Grade</TableCell>
                                 </TableRow>
                             ))}
-                                {/*<TableRow
-                                    
-                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                >
-                                    <TableCell component="th" scope="row" >
-                                        Question
-                                    </TableCell>
-                                    <TableCell align="right" >Answer</TableCell>
-                                    <TableCell align="right">Last Updated</TableCell>
-                                    <TableCell align="right">Grade</TableCell>
-                                </TableRow>
-                            */}
                         </TableBody>
                     </Table>
                 </TableContainer>

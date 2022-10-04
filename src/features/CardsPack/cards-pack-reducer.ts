@@ -6,16 +6,14 @@ import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-
 import {setForgottenEmailAC, setIsPasswordReset, setUserInfoAC} from "../Login/auth-reducer";
 
 export type PacksInitialType = {
-    cardPackData? : any//PackDataType | null
-    cardsData? : CardDataType | null
+    cardPackData?: any//PackDataType | null
+    cardsData?: CardDataType | null
 }
 
-
-const initialState :PacksInitialType = {
-    cardPackData : null , //as PackDataType | null,
-    cardsData : null as CardDataType |null
+const initialState: PacksInitialType = {
+    cardPackData: null, //as PackDataType | null,
+    cardsData: null as CardDataType | null
 }
-
 
 type CardPackType = {
     _id: string
@@ -68,12 +66,12 @@ type CardsType = {
 }
 
 type CardDataType = {
-    cards : CardsType[]
+    cards: CardsType[]
     packUserId: string
     packName: string
     packPrivate: false,
     packCreated: Date
-    packUpdated : Date
+    packUpdated: Date
     page: number
     pageCount: number
     cardsTotalCount: number
@@ -92,7 +90,7 @@ let cardsPackReducer = (state = initialState, action: actionsType) => {
 
     switch (action.type) {
         case "PACK/SET-PACK-DATA":
-            return {...state, cardPackData: action.data} 
+            return {...state, cardPackData: action.data}
         case "CARDS/SET-CARDS-DATA":
             return {...state, cardsData: action.data}
         default :
@@ -111,10 +109,10 @@ export const setCardsDataAC = (data: any) => {
 
 //Thunk Creators
 
-export const SetCardPackDataTC = (pageNumber:number,min?:number,max?:number,userId?:string) => async (dispatch: Dispatch) => {
+export const SetCardPackDataTC = (pageNumber: number, min?: number, max?: number, userId?: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
-        const res = await cardPacksAPI.getCardPAcks(9,pageNumber, min , max , userId)
+        const res = await cardPacksAPI.getCardPAcks(9, pageNumber, min, max, userId)
         if (res) {
             dispatch(setCardPackDataAC(res.data))
 
@@ -126,7 +124,7 @@ export const SetCardPackDataTC = (pageNumber:number,min?:number,max?:number,user
 
 //Cards
 
-export const SetCardDataTC = (id:string) => async (dispatch: Dispatch) => {
+export const SetCardDataTC = (id: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
         const res = await cardsAPI.getCards(id)

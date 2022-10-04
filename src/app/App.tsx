@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import Registration from '../features/Registration/Registration';
 import s from './App.module.css'
 import Header from "../common/components/Header/Header";
