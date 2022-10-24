@@ -12,9 +12,10 @@ import PackBoxContainer from '../../common/components/PackBoxContainer/PackBoxCo
 import {authAPI} from '../../app/api';
 import {initializeAppTC} from '../../app/app-reducer';
 import {NavLink} from 'react-router-dom';
-import {ModalAddNewPack} from '../ModalWidnows/ModalAddNewPack/ModalAddNewPack';
-import {ModalEditPack} from '../ModalWidnows/ModalEditPack/ModalEditPack';
-import {ModalDeletePack} from '../ModalWidnows/ModalDeletePack/ModalDeletePack';
+import { Edit } from '@mui/icons-material';
+import { ModalDeletePack } from '../ModalWidnows/PackModals/ModalDeletePack/ModalDeletePack';
+import { ModalEditPack } from '../ModalWidnows/PackModals/ModalEditPack/ModalEditPack';
+import { ModalAddNewPack } from '../ModalWidnows/PackModals/ModalAddNewPack/ModalAddNewPack';
 
 export const CardsPack = () => {
     const dispatch = useAppDispatch()
@@ -25,9 +26,9 @@ export const CardsPack = () => {
     const [addNewPackActive, setNewPackActive] = useState(false)
     const [editPackActive, setEditPackActive] = useState(false)
     const [deletePackActive, setDeletePackActive] = useState(false)
+    const [packId, setPackId] = useState('')
 
-
-    const [value, setValue] = useState<number[]>([1, 9])
+    const [value, setValue] = useState<number[]>([0, 9])
     const [page, setPage] = useState(1);
     const [myCards, setMyCards] = useState<boolean>(false)
     const count = Math.ceil(totalCount / 9)
@@ -39,6 +40,16 @@ export const CardsPack = () => {
     const updateRange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
     };
+    
+    const deleteModalPage = (id:string)=>{
+        setPackId(id)
+        setDeletePackActive(true)
+    }
+    
+    const editModalPage = (id:string)=>{
+        setPackId(id)
+        setEditPackActive(true)
+    }
 
     const updateRangePage = () => {
         if (myCards) {
@@ -103,17 +114,18 @@ export const CardsPack = () => {
                                     key={p._id}
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
-                                    <TableCell component="th" scope="row"
-                                               onClick={() => dispatch(SetCardDataTC(p._id))}>
-                                        <NavLink to={`/card/${p._id}`}>{p.name}</NavLink>
+                                    <TableCell component="th" scope="row">
+                                        <NavLink to={`/cards/${p._id}`}
+
+                                        >{p.name}</NavLink>
                                     </TableCell>
                                     <TableCell align="right">{p.cardsCount}</TableCell>
                                     <TableCell align="right">{p.updated}</TableCell>
                                     <TableCell align="right">{p.user_name}</TableCell>
                                     <TableCell align="right">{userId === p.user_id
                                         ? <div>
-                                        <IconButton aria-label="delete" onClick={()=>setDeletePackActive(true)}><DeleteIcon/></IconButton>
-                                         <IconButton aria-label="delete" onClick={()=>setEditPackActive(true)}><DeleteIcon/></IconButton>
+                                        <IconButton aria-label="delete" onClick={()=>deleteModalPage(p._id)}><DeleteIcon/></IconButton>
+                                         <IconButton aria-label="delete" onClick={()=>editModalPage(p._id)}><Edit/></IconButton>
                                         </div>
                                         : <h3>321</h3>}
                                     </TableCell>
@@ -124,9 +136,9 @@ export const CardsPack = () => {
                 </TableContainer>
                 <Pagination count={count} color="primary" onChange={handleChange}/>
             </PackBoxContainer>
-            <ModalAddNewPack addNewPackActive={addNewPackActive} setNewPackActive={setNewPackActive}/>
-            <ModalEditPack editPackActive={editPackActive} setEditPackActive={setEditPackActive}/>
-            <ModalDeletePack deletePackActive={deletePackActive} setDeletePackActive={setDeletePackActive}/>
+            <ModalAddNewPack addNewPackActive={addNewPackActive} setNewPackActive={setNewPackActive} />
+            <ModalEditPack editPackActive={editPackActive} setEditPackActive={setEditPackActive} packId={packId}/>
+            <ModalDeletePack deletePackActive={deletePackActive} setDeletePackActive={setDeletePackActive} packId={packId}/>
         </div>
     );
 };

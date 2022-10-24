@@ -7,7 +7,7 @@ export type BoxContainerPropsType = {
     buttonName?: string
     active:boolean
     setActive:any
-    buttonHandler?: () => void
+    buttonHandler?: any
     subLinkUrlText?: string
 }
 const BoxContainerStyle={
@@ -23,7 +23,6 @@ const BoxContainerStyle={
 }
 
 export const ModalContainer = (props: BoxContainerPropsType) => {
-    console.log(props.active)
     return (
         <div className={props.active ? `${s.box} ${s.active}` :` ${s.box}`} onClick={()=>props.setActive(false)} >
         <Box sx={BoxContainerStyle} className={props.active ? `${s.content} ${s.active}` : `${s.content}` } onClick={(e) => e.stopPropagation()}>

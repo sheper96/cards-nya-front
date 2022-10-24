@@ -122,6 +122,36 @@ export const SetCardPackDataTC = (pageNumber: number, min?: number, max?: number
     }
 }
 
+export const createNewPackTC = (packName:string, isPrivate:boolean) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+   
+    try {
+        const res = await cardPacksAPI.addCardPack(packName,isPrivate)
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+
+export const deletePackTC = (packId:string) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+   
+    try {
+        const res = await cardPacksAPI.deleteCardPack(packId)
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+
+export const editPackTC = (packId:string,name:string,isPrivate:boolean) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+   
+    try {
+        const res = await cardPacksAPI.updateCardPack(packId,name,isPrivate)
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+
 //Cards
 
 export const SetCardDataTC = (id: string) => async (dispatch: Dispatch) => {

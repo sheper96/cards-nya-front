@@ -54,7 +54,7 @@ function App() {
                     <Route path={'/checkemail'} element={<CheckEmail/>}></Route>
                     <Route path={'/set-new-password/:token'} element={<SetNewPassword/>}></Route>
                     <Route path={'/packs'} element={<CardsPack/>}></Route>
-                    <Route path={'/card/:packID'} element={<Card/>}></Route>
+                    <Route path={'/cards/:userId'} element={<Card/>}></Route>
                 </Routes>
             </div>
             <Snackbars/>

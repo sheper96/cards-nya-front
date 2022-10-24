@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 export const instance = axios.create({
-    /*baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/' ,*/
-    baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',
+    baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/' ,
+    /*baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',*/
     withCredentials: true,
 })
 
@@ -36,25 +36,44 @@ export const authAPI = {
 }
 
 export const cardPacksAPI = {
-    getCardPAcks(pageCount: number, pageNumber: number, min?: number , max?: number , userId?: string ) {
-        if (userId){
+    getCardPAcks(pageCount: number, pageNumber: number, min?: number, max?: number, userId?: string) {
+        if (userId) {
             return instance.get(`cards/pack?pageCount=${pageCount}&page=${pageNumber}&min=${min}&max=${max}&user_id=${userId}`);
-        }
-        else return instance.get(`cards/pack?pageCount=${pageCount}&page=${pageNumber}&min=${min}&max=${max}`);
+        } else return instance.get(`cards/pack?pageCount=${pageCount}&page=${pageNumber}&min=${min}&max=${max}`);
     },
-    addCardPack(data: AddCardPackType) {
-        return instance.post('cards/pack', data);
+    addCardPack(name: string, isPrivate: boolean) {
+        return instance.post('cards/pack', {
+            cardsPack: {
+                name: name,
+                private: isPrivate
+            }
+        });
     },
-    updateCardPack(data: UpdateCardPackType) {
-        return instance.put('cards/pack', data);
+    updateCardPack(packId: string, name: string, isPrivate: boolean) {
+        return instance.put('cards/pack', {
+            cardsPack: {
+                _id: packId,
+                name: name,
+                private: isPrivate
+            }
+        });
     },
-    deleteCardPack() {
-        return instance.delete('cards/pack?id=6334cd323f379e2a78a1d897');
+    deleteCardPack(packId: string) {
+        return instance.delete(`cards/pack?id=${packId}`);
     },
 }
 export const cardsAPI = {
     getCards(id: string) {
         return instance.get(`cards/card?cardsPack_id=${id} `);
+    },
+    addCard() {
+        return instance.post('cards/card' , {});
+    },
+    deleteCard(id: string) {
+        return instance.delete(`cards/card?id=${id}`);
+    },
+    editCard() {
+        return instance.put('cards/card' , {});
     },
 
 }
@@ -90,7 +109,7 @@ export type loginParamsType = {
 export type AddCardPackType = {
     name: string
     deckCover?: string
-    private?: boolean
+    isPrivate?: boolean
 }
 
 export type UpdateCardPackType = {
@@ -98,5 +117,3 @@ export type UpdateCardPackType = {
     _id: string
 }
 
-//968b9390-40a3-11ed-a346-336d45d0120e
-//968c56e0-40a3-11ed-a346-336d45d0120e
