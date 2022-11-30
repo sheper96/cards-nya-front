@@ -20,8 +20,8 @@ import { ModalAddNewPack } from '../ModalWidnows/PackModals/ModalAddNewPack/Moda
 export const CardsPack = () => {
     const dispatch = useAppDispatch()
 
-    const packs = useAppSelector((state) => state.cards.cardPackData?.cardPacks)
-    const totalCount = useAppSelector((state) => state.cards.cardPackData?.cardPacksTotalCount)
+    const packs = useAppSelector((state:any) => state.cards.cardPackData?.cardPacks)
+    const totalCount = useAppSelector((state:any) => state.cards.cardPackData?.cardPacksTotalCount)
     const userId = useAppSelector((state) => state.auth.userInfo?._id)
     const [addNewPackActive, setNewPackActive] = useState(false)
     const [editPackActive, setEditPackActive] = useState(false)

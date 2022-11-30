@@ -16,6 +16,7 @@ import { SetNewPassword } from '../features/ForgotPassword/SetNewPassword';
 import {CardsPack} from "../features/CardsPack/CardsPack";
 import { Card } from '../features/Card/Card';
 import { initializeAppTC } from './app-reducer';
+import { Learn } from '../features/Learn/Learn';
 
 
 export const font = "'Montserrat', sans-serif";
@@ -54,7 +55,8 @@ function App() {
                     <Route path={'/checkemail'} element={<CheckEmail/>}></Route>
                     <Route path={'/set-new-password/:token'} element={<SetNewPassword/>}></Route>
                     <Route path={'/packs'} element={<CardsPack/>}></Route>
-                    <Route path={'/cards/:userId'} element={<Card/>}></Route>
+                    <Route path={'/cards/:packId'} element={<Card/>}></Route>
+                    <Route path={'/learn/:packId'} element={<Learn/>}></Route>
                 </Routes>
             </div>
             <Snackbars/>

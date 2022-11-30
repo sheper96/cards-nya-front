@@ -6,13 +6,27 @@ import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-
 import {setForgottenEmailAC, setIsPasswordReset, setUserInfoAC} from "../Login/auth-reducer";
 
 export type PacksInitialType = {
-    cardPackData?: any//PackDataType | null
-    cardsData?: CardDataType | null
+    cardPackData?: PackDataType | null
+    cardsData?: CardDataType 
 }
 
-const initialState: PacksInitialType = {
-    cardPackData: null, //as PackDataType | null,
-    cardsData: null as CardDataType | null
+export const initialState: PacksInitialType = {
+    cardPackData: {} as PackDataType,
+    cardsData: {
+        cards: [] as CardsType[],
+        packUserId: '',
+        packName: '',
+        packPrivate: false,
+        packCreated: new Date(),
+        packUpdated: new Date(),
+        page: 1,
+        pageCount: 0,
+        cardsTotalCount: 0,
+        minGrade: 0,
+        maxGrade: 6,
+        token: '',
+        tokenDeathTime: 0,
+    } as CardDataType
 }
 
 type CardPackType = {
@@ -46,23 +60,21 @@ type PackDataType = {
     tokenDeathTime: number
 }
 
-type CardsType = {
-    _id: string
-    user_id: string
-    user_name: string
-    private: boolean,
-    name: string
-    path: string
-    grade: number
-    shots: number
-    deckCover: string
-    cardsCount: number
-    type: string
-    rating: number
-    created: string
-    updated: string
-    more_id: string
-    __v: number
+export type CardsType = {
+    _id: string;
+    cardsPack_id: string;
+    user_id: string;
+    answer: string;
+    question: string;
+    grade: number;
+    shots: number;
+    comments: string;
+    type: string;
+    rating: number;
+    more_id: string;
+    created: string;
+    updated: string;
+    __v: number;
 }
 
 type CardDataType = {
@@ -81,12 +93,11 @@ type CardDataType = {
     tokenDeathTime: number
 }
 
-
-type actionsType = ReturnType<typeof setCardPackDataAC> |
+export type actionsType = ReturnType<typeof setCardPackDataAC> |
     ReturnType<typeof setCardsDataAC>
 
 
-let cardsPackReducer = (state = initialState, action: actionsType) => {
+export const cardsPackReducer = (state = initialState, action: actionsType) => {
 
     switch (action.type) {
         case "PACK/SET-PACK-DATA":
@@ -154,7 +165,7 @@ export const editPackTC = (packId:string,name:string,isPrivate:boolean) => async
 
 //Cards
 
-export const SetCardDataTC = (id: string) => async (dispatch: Dispatch) => {
+export const SetCardDataTC = (id?: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
         const res = await cardsAPI.getCards(id)
@@ -167,4 +178,29 @@ export const SetCardDataTC = (id: string) => async (dispatch: Dispatch) => {
     }
 }
 
-export default cardsPackReducer;
+export const addNewCardTC = (cardsPackId: string | undefined ,question:string,answer:string) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await cardsAPI.addNewCard(cardsPackId,question,answer)
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+
+export const updateCardTC = (cardId: string  ,question:string,answer:string) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await cardsAPI.editCard(cardId,question,answer)
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+export const deleteCardTC = (cardId: string ) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await cardsAPI.deleteCard(cardId)
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+

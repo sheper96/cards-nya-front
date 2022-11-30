@@ -63,17 +63,32 @@ export const cardPacksAPI = {
     },
 }
 export const cardsAPI = {
-    getCards(id: string) {
+    getCards(id?: string) {
         return instance.get(`cards/card?cardsPack_id=${id} `);
     },
-    addCard() {
-        return instance.post('cards/card' , {});
+    addNewCard(cardsPackId:string | undefined,question:string,answer:string) {
+        return instance.post('cards/card' , {
+            card: {
+                cardsPack_id: cardsPackId,
+                question: question,
+                answer: answer,
+                grade: 0, // 0..5, не обязателен
+                shots: 0, // не обязателен
+            }
+        });
     },
-    deleteCard(id: string) {
-        return instance.delete(`cards/card?id=${id}`);
+    deleteCard(cardId: string) {
+        return instance.delete(`cards/card?id=${cardId}`);
     },
-    editCard() {
-        return instance.put('cards/card' , {});
+    editCard(cardsId:string,question:string,answer:string) {
+        return instance.put('cards/card' , {
+            card: {
+                _id: cardsId,
+                question: question,
+                answer: answer,
+
+            }
+        });
     },
 
 }
