@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import {useAppDispatch, useAppSelector } from "../../common/hooks/react-redux-hooks";
-import { CardsType, SetCardDataTC } from "../CardsPack/cards-pack-reducer";
+import {addGradeTC, CardsType, SetCardDataTC } from "../CardsPack/cards-pack-reducer";
 import s from './Learn.module.css'
 
 
@@ -29,8 +29,16 @@ export const Learn = () => {
     const navigate = useNavigate();
     const {packId} = useParams();
     const [first, setFirst] = useState<boolean>(true);
+    const [active, setActive] = useState<boolean>(false);
+    const [valueRadio, setValueRadio] = useState<number>(1);
     const cards:CardsType[] = useAppSelector((state:any) => state.cards?.cardsData?.cards);
 
+    const updateGrade = (grade:number,card_id:string)=>{
+        setActive(false)
+        dispatch(addGradeTC(grade,card_id))
+        setCard(getCard(cards))
+    }
+    
     console.log(cards)
 
     const [card, setCard] = useState<CardsType>({
@@ -50,6 +58,8 @@ export const Learn = () => {
         updated: '',
     } );
 
+    console.log(card)
+
     useEffect(() => {
         console.log('LearnContainer useEffect');
 
@@ -68,17 +78,42 @@ export const Learn = () => {
     }, [cards]);
 
     return (
-        <div className={s.container}>
+        <div>
             {cards?.length > 0 ?
                 <BoxContainer title={'Learn'}>
                     <div >
                         <div>
-                            <h4>Question:</h4>
+                            <h4>Question:{card.question}</h4>
                         </div>
-                        <div>
-                            <h4>Answer:</h4>
-                        </div>
-                        <Button onClick={()=>alert('answer')} variant="contained" size="large" sx={{borderRadius: 7.5}}>Show answer</Button>
+                        {active && <div>
+                            <h4>Answer:{card.answer}</h4>
+                            <div className={s.rateBox}>
+                                <p>Rate yourself:</p>
+                                {grades.map((el, index) => {
+                                    const onClickHandler = () => {
+                                        setValueRadio(index + 1)
+                                       
+                                    }
+                                    return (
+                                        <div key={index}>
+                                            <div
+                                                className={s.inputRadio}
+                                                onClick={onClickHandler}
+                                            >
+                                                <input
+                                                    type={'radio'}
+                                                    checked={valueRadio === index + 1}
+                                                />
+                                                <span>{el}</span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            <Button onClick={()=> updateGrade(valueRadio,card._id)} variant="contained" size="large" sx={{borderRadius: 7.5}}>Next</Button>
+                        </div>}
+
+                        {active ||<Button onClick={()=>setActive(true)} variant="contained" size="large" sx={{borderRadius: 7.5}}>Show answer</Button> }   
                     </div>
                 </BoxContainer>
                 :

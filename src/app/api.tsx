@@ -1,7 +1,9 @@
 import axios from 'axios'
+import { PackType } from '../features/Packs/pack-reducer';
+import { UrlParamsType } from '../features/Packs/packs2-reducer';
 
 export const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/' ,
+    baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/',
     /*baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',*/
     withCredentials: true,
 })
@@ -36,10 +38,23 @@ export const authAPI = {
 }
 
 export const cardPacksAPI = {
-    getCardPAcks(pageCount: number, pageNumber: number, min?: number, max?: number, userId?: string) {
+    getCardPAcks(pageCount: number, pageNumber: number, min?: number, max?: number, userId?: string,packName?:string) {
         if (userId) {
-            return instance.get(`cards/pack?pageCount=${pageCount}&page=${pageNumber}&min=${min}&max=${max}&user_id=${userId}`);
+            return instance.get(`cards/pack?pageCount=${pageCount}&page=${pageNumber}&min=${min}&max=${max}packName=${packName}&user_id=${userId}`);
         } else return instance.get(`cards/pack?pageCount=${pageCount}&page=${pageNumber}&min=${min}&max=${max}`);
+    },
+    getPacks(params:UrlParamsType) {
+        return instance.get<ResponsePacksType>(`cards/pack`, {
+            params: {
+                page: params.page,
+                pageCount: params.pageCount,
+                packName: params.packName,
+                user_id: params.userID,
+                min: params.min,
+                max: params.max
+            }
+        })
+    
     },
     addCardPack(name: string, isPrivate: boolean) {
         return instance.post('cards/pack', {
@@ -66,28 +81,34 @@ export const cardsAPI = {
     getCards(id?: string) {
         return instance.get(`cards/card?cardsPack_id=${id} `);
     },
-    addNewCard(cardsPackId:string | undefined,question:string,answer:string) {
-        return instance.post('cards/card' , {
+    addNewCard(cardsPackId: string | undefined, question: string, answer: string) {
+        return instance.post('cards/card', {
             card: {
                 cardsPack_id: cardsPackId,
                 question: question,
                 answer: answer,
-                grade: 0, // 0..5, не обязателен
-                shots: 0, // не обязателен
+                grade: 0,
+                shots: 0,
             }
         });
     },
     deleteCard(cardId: string) {
         return instance.delete(`cards/card?id=${cardId}`);
     },
-    editCard(cardsId:string,question:string,answer:string) {
-        return instance.put('cards/card' , {
+    editCard(cardsId: string, question: string, answer: string) {
+        return instance.put('cards/card', {
             card: {
                 _id: cardsId,
                 question: question,
                 answer: answer,
 
             }
+        });
+    },
+    addGradeToCard(grade: number, card_id: string) {
+        return instance.put('cards/grade', {
+            grade:grade,
+            card_id: card_id
         });
     },
 
@@ -120,6 +141,18 @@ export type loginParamsType = {
 }
 
 //card pack API type
+
+export type ResponsePacksType = {
+    cardPacks: PackType[];
+    page: number;
+    pageCount: number;
+    cardPacksTotalCount: number;
+    minCardsCount: number;
+    maxCardsCount: number;
+    token: string;
+    tokenDeathTime: number;
+}
+
 
 export type AddCardPackType = {
     name: string

@@ -5,3 +5,15 @@
     min-height: 100vh;
 }
 
+.init {
+    position: fixed;
+    top: 30%;
+    text-align: center;
+    width: 100%;
+}
+
+.appContainer{
+    height: 100%;
+    width: 80%;
+    margin: 0 auto;
+}

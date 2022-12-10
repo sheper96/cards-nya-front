@@ -1,9 +1,8 @@
 import {Dispatch} from "redux";
 import {authAPI, ForgotType, loginParamsType, SetNewPasswordType, UpdateUserNameType} from "../../app/api";
 import {handleServerNetworkError} from "../../common/utils/utils";
-import {isAxiosError} from "../Registration/registration-reducer";
 import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-reducer";
-
+import axios, { AxiosError } from "axios";
 
 export type signInType = {
     email: string,
@@ -30,7 +29,17 @@ export type UserProfileType = {
     rememberMe: boolean;
     error?: string;
 }
-type actionsType = ReturnType<typeof setUserInfoAC> |
+
+type registerParamsType = {
+    email: string,
+    password: string
+}
+
+export function isAxiosError<ResponseType>(error: unknown): error is AxiosError<ResponseType> {
+    return axios.isAxiosError(error);
+}
+
+export type AuthActionsType = ReturnType<typeof setUserInfoAC> |
     ReturnType<typeof setForgottenEmailAC> |
     ReturnType<typeof setIsPasswordReset> |
     ReturnType<typeof setLogInAC>
@@ -44,7 +53,7 @@ const initialState: signInType = {
     forgottenEmail: null as string | null,
     userInfo: null as UserProfileType | null,
 }
-let authReducer = (state = initialState, action: actionsType) => {
+let authReducer = (state = initialState, action: AuthActionsType) => {
 
     switch (action.type) {
         case "AUTH/SET-USER-INFO":
@@ -85,7 +94,6 @@ export const loginTC = (data: loginParamsType) => async (dispatch: Dispatch) => 
         }
     } catch (error: unknown) {
         dispatch(setAppStatusAC('failed'))
-        dispatch(setAppInitializedAC(false))
         if (isAxiosError<MyExpectedResponseType>(error)) {
             if (error.response?.data.error) {
                 handleServerNetworkError(error.response?.data.error, dispatch)
@@ -109,7 +117,6 @@ export const logOutTC = () => async (dispatch: Dispatch) => {
 }
 
 export const updateUserInfoTC = (data: UpdateUserNameType) => async (dispatch: Dispatch) => {
-    debugger
     dispatch(setAppStatusAC("loading"))
     try {
         const res = await authAPI.updateName(data)
@@ -139,6 +146,27 @@ export const setNewPasswordTC = (data: SetNewPasswordType) => async (dispatch: D
         dispatch(setAppStatusAC('succeeded'))
     }
 }
+
+
+export const registerTC = (data: registerParamsType) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await authAPI.register(data)
+        window.location.href = '/login'
+    }catch (error: unknown) {
+        if (isAxiosError<MyExpectedResponseType>(error)) {
+            if (error.response?.data.error) {
+                handleServerNetworkError(error.response?.data.error, dispatch)
+            } else {
+                handleServerNetworkError(error.message, dispatch)
+            }
+        }
+    }finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+
+}
+
 
 
 export default authReducer;

@@ -6,7 +6,7 @@ import { createNewPackTC } from "../../../CardsPack/cards-pack-reducer";
 
 type AddNewPactType = {
     addNewPackActive: boolean
-    setNewPackActive: any
+    setNewPackActive: (arg:boolean)=>void
 }
 
 export const ModalAddNewPack = (props: AddNewPactType) => {

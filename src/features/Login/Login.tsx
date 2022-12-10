@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,9 +10,11 @@ import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hoo
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import s from './login.module.css'
 import {useNavigate} from "react-router-dom";
-import {Link} from "@mui/material";
+import {IconButton, InputAdornment, Link} from "@mui/material";
 import Box from '@material-ui/core/Box';
 import { loginTC } from './auth-reducer';
+import {Visibility, VisibilityOff } from '@mui/icons-material';
+import { font } from '../../app/App';
 
 type FormikErrorType = {
     email?: string
@@ -21,6 +23,13 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
+    let [isShowPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => {
+        setShowPassword(!isShowPassword)
+    }
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const formik = useFormik({
@@ -50,36 +59,62 @@ export const Login = () => {
 
 
     useEffect(() => {
-        if (isLoggedIn) {
-            navigate('/profile')
-        }
-    }, [isLoggedIn])
+
+    }, )
+
+    if (isLoggedIn) {
+        navigate('/profile')
+    }
     return (<div className={s.container}>
         <BoxContainer title={'Sing in'} subTextForm={'Already have an account?'} subLinkUrlText={'Sign up'}
                       subLinkUrl={'/registration'}>
             <form onSubmit={formik.handleSubmit} className={s.form}>
                 <FormControl>
                     <FormGroup>
-                        <TextField error={
-                            Boolean(formik.errors.email && formik.touched.email)
-                        }
-                                   helperText={
-                                       formik.errors.email &&
-                                       formik.touched.email &&
-                                       String(formik.errors.email)
-                                   }
-                                   {...formik.getFieldProps('email')} label="Email" margin="normal"/>
-                        <TextField error={
-                            Boolean(formik.errors.password && formik.touched.password)
-                        }
-                                   helperText={
-                                       formik.errors.password &&
-                                       formik.touched.password &&
-                                       String(formik.errors.password)
-                                   }
-                                   {...formik.getFieldProps('password')} type="password" label="Password"
-                                   margin="normal"
+                        <TextField
+                            error={
+                                Boolean(formik.errors.email && formik.touched.email)
+                            }
+                            helperText={
+                                formik.errors.email &&
+                                formik.touched.email &&
+                                String(formik.errors.email)
+                            }
+                            label="Email"
+                            type="text"
+                            margin="normal"
+                            {...formik.getFieldProps('email')}
+                            inputProps={{style: {fontFamily: font}}}
+                            InputLabelProps={{style: {fontFamily: font}}}
                         />
+                        <TextField
+                            error={
+                                Boolean(formik.errors.password && formik.touched.password)
+                            }
+                            helperText={
+                                formik.errors.password &&
+                                formik.touched.password &&
+                                String(formik.errors.password)
+                            }
+                            label="Password"
+                            type={isShowPassword? "text": "password"}
+                            margin="normal"
+                            {...formik.getFieldProps('password')}
+                            inputProps={{style: {fontFamily: font}}}
+                            InputLabelProps={{style: {fontFamily: font}}}
+                            InputProps={{
+                                endAdornment:
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                        >
+                                            {isShowPassword ? <VisibilityOff/> : <Visibility/>}
+                                        </IconButton>
+                                    </InputAdornment>
+                            }}
+                        />    
                         <Box className={s.row}>
                             <FormControlLabel {...formik.getFieldProps('rememberMe')} label={'Remember me'}
                                               control={<Checkbox/>}/>

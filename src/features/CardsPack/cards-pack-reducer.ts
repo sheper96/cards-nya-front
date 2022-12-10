@@ -1,17 +1,26 @@
 import {Dispatch} from "redux";
 import {cardPacksAPI, cardsAPI,} from "../../app/api";
 import {handleServerNetworkError} from "../../common/utils/utils";
-import {isAxiosError} from "../Registration/registration-reducer";
 import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-reducer";
 import {setForgottenEmailAC, setIsPasswordReset, setUserInfoAC} from "../Login/auth-reducer";
+import { PackType } from "../Packs/pack-reducer";
 
 export type PacksInitialType = {
-    cardPackData?: PackDataType | null
-    cardsData?: CardDataType 
+    cardPackData: PackDataType
+    cardsData?: CardDataType
 }
 
 export const initialState: PacksInitialType = {
-    cardPackData: {} as PackDataType,
+    cardPackData: {
+        cardPacks: [] as CardPackType[],
+        cardPacksTotalCount: 0,
+        maxCardsCount: 0,
+        minCardsCount: 0,
+        page: 1,
+        pageCount: 5,
+        token: '',
+        tokenDeathTime: 0,
+    } as PackDataType,
     cardsData: {
         cards: [] as CardsType[],
         packUserId: '',
@@ -93,11 +102,12 @@ type CardDataType = {
     tokenDeathTime: number
 }
 
-export type actionsType = ReturnType<typeof setCardPackDataAC> |
+export type CardsPackActionsType = ReturnType<typeof setCardPackDataAC> |
     ReturnType<typeof setCardsDataAC>
 
+export type InitialPacksStateType = typeof initialState
 
-export const cardsPackReducer = (state = initialState, action: actionsType) => {
+export const cardsPackReducer = (state = initialState, action: CardsPackActionsType) :InitialPacksStateType => {
 
     switch (action.type) {
         case "PACK/SET-PACK-DATA":
@@ -111,19 +121,19 @@ export const cardsPackReducer = (state = initialState, action: actionsType) => {
 
 //Action Creators
 
-export const setCardPackDataAC = (data: PackDataType[]) => {
+export const setCardPackDataAC = (data: PackDataType) => {
     return {type: "PACK/SET-PACK-DATA", data: data} as const
 }
-export const setCardsDataAC = (data: any) => {
+export const setCardsDataAC = (data: CardDataType) => {
     return {type: "CARDS/SET-CARDS-DATA", data: data} as const
 }
 
 //Thunk Creators
 
-export const SetCardPackDataTC = (pageNumber: number, min?: number, max?: number, userId?: string) => async (dispatch: Dispatch) => {
+export const SetCardPackDataTC = (pageNumber: number, min?: number, max?: number, userId?: string,packName?:string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
-        const res = await cardPacksAPI.getCardPAcks(9, pageNumber, min, max, userId)
+        const res = await cardPacksAPI.getCardPAcks(5, pageNumber, min, max, userId,packName)
         if (res) {
             dispatch(setCardPackDataAC(res.data))
 
@@ -133,19 +143,19 @@ export const SetCardPackDataTC = (pageNumber: number, min?: number, max?: number
     }
 }
 
-export const createNewPackTC = (packName:string, isPrivate:boolean) => async (dispatch: Dispatch) => {
+export const createNewPackTC = (packName: string, isPrivate: boolean) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-   
+
     try {
-        const res = await cardPacksAPI.addCardPack(packName,isPrivate)
+        const res = await cardPacksAPI.addCardPack(packName, isPrivate)
     } finally {
         dispatch(setAppStatusAC('succeeded'))
     }
 }
 
-export const deletePackTC = (packId:string) => async (dispatch: Dispatch) => {
+export const deletePackTC = (packId: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-   
+
     try {
         const res = await cardPacksAPI.deleteCardPack(packId)
     } finally {
@@ -153,11 +163,11 @@ export const deletePackTC = (packId:string) => async (dispatch: Dispatch) => {
     }
 }
 
-export const editPackTC = (packId:string,name:string,isPrivate:boolean) => async (dispatch: Dispatch) => {
+export const editPackTC = (packId: string, name: string, isPrivate: boolean) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-   
+
     try {
-        const res = await cardPacksAPI.updateCardPack(packId,name,isPrivate)
+        const res = await cardPacksAPI.updateCardPack(packId, name, isPrivate)
     } finally {
         dispatch(setAppStatusAC('succeeded'))
     }
@@ -178,24 +188,24 @@ export const SetCardDataTC = (id?: string) => async (dispatch: Dispatch) => {
     }
 }
 
-export const addNewCardTC = (cardsPackId: string | undefined ,question:string,answer:string) => async (dispatch: Dispatch) => {
+export const addNewCardTC = (cardsPackId: string | undefined, question: string, answer: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
-        const res = await cardsAPI.addNewCard(cardsPackId,question,answer)
+        const res = await cardsAPI.addNewCard(cardsPackId, question, answer)
     } finally {
         dispatch(setAppStatusAC('succeeded'))
     }
 }
 
-export const updateCardTC = (cardId: string  ,question:string,answer:string) => async (dispatch: Dispatch) => {
+export const updateCardTC = (cardId: string, question: string, answer: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
-        const res = await cardsAPI.editCard(cardId,question,answer)
+        const res = await cardsAPI.editCard(cardId, question, answer)
     } finally {
         dispatch(setAppStatusAC('succeeded'))
     }
 }
-export const deleteCardTC = (cardId: string ) => async (dispatch: Dispatch) => {
+export const deleteCardTC = (cardId: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
         const res = await cardsAPI.deleteCard(cardId)
@@ -204,3 +214,13 @@ export const deleteCardTC = (cardId: string ) => async (dispatch: Dispatch) => {
     }
 }
 
+//Learn
+
+export const addGradeTC = (grade: number, card_id: string) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await cardsAPI.addGradeToCard(grade, card_id)
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}

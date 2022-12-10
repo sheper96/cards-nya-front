@@ -32,7 +32,7 @@ export const ModalContainer = (props: BoxContainerPropsType) => {
             </div>
             <div className={s.buttonGroup}>
                 <Button
-                    onClick={()=>alert("cancel")}
+                    onClick={()=>{props.setActive(false)}}
                     style={{
                         backgroundColor: "#ffffff",
                         color: '#000'

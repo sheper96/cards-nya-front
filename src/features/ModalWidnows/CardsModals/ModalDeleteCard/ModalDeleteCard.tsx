@@ -4,13 +4,13 @@ import {ModalContainer} from "../../../../common/components/ModalContainer/Modal
 import {useAppDispatch} from "../../../../common/hooks/react-redux-hooks";
 import {createNewPackTC, deleteCardTC} from "../../../CardsPack/cards-pack-reducer";
 
-type AddNewCardType = {
+type DeleteCardType = {
     deleteCardActive: boolean
-    setDeleteCardActive: any
+    setDeleteCardActive: (arg:boolean)=>void
     cardId:string
 }
 
-export const ModalDeleteCard = (props: AddNewCardType) => {
+export const ModalDeleteCard = (props: DeleteCardType) => {
 
     const [cardName, setCardName] = useState('Card Name')
     const [isPrivate, setIsPrivate] = useState(false)

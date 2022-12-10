@@ -1,6 +1,7 @@
 import {Dispatch} from "redux"
 import {setLogInAC, setUserInfoAC} from "../features/Login/auth-reducer";
 import {authAPI} from "./api";
+import { AppThunk } from "./store";
 
 
 const initialState: InitialStateType = {
@@ -11,7 +12,7 @@ const initialState: InitialStateType = {
    
 }
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
         case 'APP/SET-STATUS':
             return {...state, status: action.status}
@@ -28,16 +29,29 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 }
 
 
-export const initializeAppTC = () => async (dispatch: Dispatch) => {
+/*
+export const initializeAppTC = () => async (dispatch:Dispatch) => {
     try {
         const res = await authAPI.authMe()
         dispatch(setLogInAC(true))
         dispatch(setUserInfoAC(res.data))
 
     } catch (e) {
-        dispatch(setAppInitializedAC(false));
+      /!*  dispatch(setAppInitializedAC(false));*!/
     } finally {
         dispatch(setAppInitializedAC(true));
+    }
+}
+*/
+
+export const initializeAppTC = (): AppThunk => async (dispatch:Dispatch) => {
+    try {
+        const res = await authAPI.authMe()
+        dispatch(setLogInAC(true))
+        dispatch(setUserInfoAC(res.data))
+    } catch (e) {
+    } finally {
+        dispatch(setAppInitializedAC(true))
     }
 }
 
@@ -59,7 +73,7 @@ export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type setAppInitializedtionType = ReturnType<typeof setAppInitializedAC>
 export type setAppType = ReturnType<typeof setAppModalTypeAC>
 
-type ActionsType =
+export type AppActionsType =
     | SetAppErrorActionType
     | SetAppStatusActionType
     | setAppInitializedtionType

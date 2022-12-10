@@ -6,7 +6,7 @@ import { createNewPackTC, updateCardTC } from "../../../CardsPack/cards-pack-red
 
 type AddNewCardType = {
     editCardActive: boolean
-    setEditCardActive: any
+    setEditCardActive: (arg:boolean)=>void
     cardId:string
 
 }
@@ -23,9 +23,6 @@ export const ModalEditCard = (props: AddNewCardType) => {
         dispatch(updateCardTC(props.cardId,cardQuestion,cardAnswer))
         setCardQuestion('')
         setCardAnswer('')
-        /*props.setEditCardActive(false)*/
-        /* dispatch(SetCardDataTC(props.packId))*/
-        // разлогинивает апп
     }
 
     const questionHandler = (e: React.ChangeEvent<HTMLInputElement>)=>{
@@ -34,8 +31,6 @@ export const ModalEditCard = (props: AddNewCardType) => {
     const answerHandler = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setCardAnswer(e.currentTarget.value)
     }
-
-
 
     return (
         <div>

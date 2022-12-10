@@ -5,14 +5,15 @@ import { useAppDispatch } from "../../../../common/hooks/react-redux-hooks";
 import { deletePackTC, SetCardPackDataTC } from "../../../CardsPack/cards-pack-reducer";
 
 
-type AddNewPactType ={
+type DeletePackType ={
     deletePackActive:boolean
-    setDeletePackActive:any
+    setDeletePackActive:(arg:boolean)=>void
     packId:string
+    packName:string
 
 }
 
-export const ModalDeletePack = (props:AddNewPactType) => {
+export const ModalDeletePack = (props:DeletePackType) => {
 
     console.log(props.packId)
 
@@ -28,7 +29,7 @@ export const ModalDeletePack = (props:AddNewPactType) => {
     return (
         <div >
             <ModalContainer title={'Delete Pack'} active={props.deletePackActive} setActive={props.setDeletePackActive} buttonName={'Delete'} buttonHandler={deletePack} >
-                    <p>Do you really want to remove <b>Pack Name? </b>
+                    <p>Do you really want to remove <b>{props.packName}</b>
                        <br/> All cards will be deleted.</p>
                 </ModalContainer>
         </div>

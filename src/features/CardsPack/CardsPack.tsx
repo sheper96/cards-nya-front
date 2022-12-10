@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PackBoxContainer from '../../common/components/PackBoxContainer/PackBoxContainer';
 import {authAPI} from '../../app/api';
 import {initializeAppTC} from '../../app/app-reducer';
-import {NavLink} from 'react-router-dom';
+import {Navigate, NavLink} from 'react-router-dom';
 import { Edit } from '@mui/icons-material';
 import { ModalDeletePack } from '../ModalWidnows/PackModals/ModalDeletePack/ModalDeletePack';
 import { ModalEditPack } from '../ModalWidnows/PackModals/ModalEditPack/ModalEditPack';
@@ -19,6 +19,7 @@ import { ModalAddNewPack } from '../ModalWidnows/PackModals/ModalAddNewPack/Moda
 
 export const CardsPack = () => {
     const dispatch = useAppDispatch()
+    let isLoggedIn=useAppSelector(state=>state.auth.isLoggedIn)
 
     const packs = useAppSelector((state:any) => state.cards.cardPackData?.cardPacks)
     const totalCount = useAppSelector((state:any) => state.cards.cardPackData?.cardPacksTotalCount)
@@ -28,10 +29,11 @@ export const CardsPack = () => {
     const [deletePackActive, setDeletePackActive] = useState(false)
     const [packId, setPackId] = useState('')
 
-    const [value, setValue] = useState<number[]>([0, 9])
+    const [value, setValue] = useState<number[]>([0, 100])
     const [page, setPage] = useState(1);
+    const [searchValue, setSearchValue] = useState<string>('');
     const [myCards, setMyCards] = useState<boolean>(false)
-    const count = Math.ceil(totalCount / 9)
+    const count = Math.ceil(totalCount / 5)
 
     const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
         dispatch(SetCardPackDataTC(page, value[0], value[1]))
@@ -67,19 +69,29 @@ export const CardsPack = () => {
         setMyCards(false)
     }
 
+    const searchHandler = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setSearchValue(e.currentTarget.value)
+        dispatch(SetCardPackDataTC(page, value[0], value[1],searchValue))
+    }
+
+
     useEffect(() => {
         console.log('pack ')
         dispatch(SetCardPackDataTC(1, value[0], value[1]))
 
     }, [])
 
+    if (!isLoggedIn) {
+        return <Navigate to={'/login'}/>
+    }
+    
     return (
         <div className={s.container}>
             <PackBoxContainer title={"Pack List"} buttonTitle={"Add New Pack"} buttonCallback={()=>setNewPackActive(true)}>
                 <div className={s.workingPanel}>
                     <div className={s.search}>
                         <h3>Search</h3>
-                        <TextField autoFocus value={'search'} size={"small"} id="standard-basic" label="Search"
+                        <TextField autoFocus value={searchValue} size={"small"} id="standard-basic" label="Search" onChange={searchHandler}
                                    variant="outlined"/>
                     </div>
                     <div>
@@ -91,10 +103,12 @@ export const CardsPack = () => {
                     </div>
                     <div>
                         <h2>Number of cards</h2>
-                        <Slider value={value} step={1} getAriaLabel={() => 'Default'} max={10} valueLabelDisplay="auto"
-                                onChange={updateRange}/>
-                        <Button onClick={updateRangePage} variant="contained" size="medium"
-                                sx={{borderRadius: 7.5, mt: 4}}>set range</Button>
+                        <Slider value={value} step={1} 
+                                getAriaLabel={() => 'Default'} 
+                                max={100} 
+                                valueLabelDisplay="auto"
+                                onChange={updateRange}  
+                                onChangeCommitted={updateRangePage}/>
                     </div>
                 </div>
                 <TableContainer component={Paper}>
@@ -112,7 +126,7 @@ export const CardsPack = () => {
                             {packs && packs.map((p: any) => (
                                 <TableRow
                                     key={p._id}
-                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                   
                                 >
                                     <TableCell component="th" scope="row">
                                         <NavLink to={`/cards/${p._id}`}
@@ -137,8 +151,8 @@ export const CardsPack = () => {
                 <Pagination count={count} color="primary" onChange={handleChange}/>
             </PackBoxContainer>
             <ModalAddNewPack addNewPackActive={addNewPackActive} setNewPackActive={setNewPackActive} />
-            <ModalEditPack editPackActive={editPackActive} setEditPackActive={setEditPackActive} packId={packId}/>
-            <ModalDeletePack deletePackActive={deletePackActive} setDeletePackActive={setDeletePackActive} packId={packId}/>
+            {/*<ModalEditPack editPackActive={editPackActive} setEditPackActive={setEditPackActive} packId={packId}/>*/}
+           {/* <ModalDeletePack deletePackActive={deletePackActive} setDeletePackActive={setDeletePackActive} packId={packId}/>*/}
         </div>
     );
 };

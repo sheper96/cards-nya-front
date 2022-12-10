@@ -2,6 +2,7 @@ import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow 
 import { useEffect, useState } from 'react';
 import {NavLink, useParams, useSearchParams } from 'react-router-dom';
 import PackBoxContainer from '../../common/components/PackBoxContainer/PackBoxContainer';
+import { StarRating } from '../../common/components/StarRating/StarRating';
 import { useAppDispatch, useAppSelector } from '../../common/hooks/react-redux-hooks';
 import { SetCardDataTC } from '../CardsPack/cards-pack-reducer';
 import { ModalAddNewCard } from '../ModalWidnows/CardsModals/ModalAddNewCard/ModalAddNewCard';
@@ -53,8 +54,7 @@ export const Card = () => {
     isAuthor ? buttonHandler = ()=>{setAddNewCardActive(true)} : buttonHandler = ()=>{alert("Learn Card")}
 
     return (
-        <div className={s.container}>
-
+        <div>
             <PackBoxContainer title={"Pack List"}  buttonTitle = {buttonTitle} buttonCallback={buttonHandler}>
                 <NavLink to={`/learn/${params.packId}`}
                 > learn</NavLink>
@@ -79,7 +79,7 @@ export const Card = () => {
                                     </TableCell>
                                     <TableCell align="right" >{c.answer}</TableCell>
                                     <TableCell align="right">{c.updated}</TableCell>
-                                    <TableCell align="right">Grade
+                                    <TableCell align="right"><StarRating ratingValue={c.grade} />
                                         {isAuthor && <div><button onClick={()=>editModal(c._id)}>edit</button> <button onClick={()=>deleteModal(c._id)}>delete</button></div> }
                                     </TableCell>
                                 </TableRow>

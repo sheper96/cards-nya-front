@@ -38,3 +38,10 @@
     color: #000000;
     opacity: 0.5;
 }
+
+.packList{
+    text-decoration: none;
+    font-weight: 900;
+    color: #000000;
+    margin: 0 0 40px 0;
+}

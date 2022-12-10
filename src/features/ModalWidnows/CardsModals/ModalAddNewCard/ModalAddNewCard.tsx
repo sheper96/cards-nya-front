@@ -6,8 +6,8 @@ import {addNewCardTC, createNewPackTC, SetCardDataTC } from "../../../CardsPack/
 
 type AddNewCardType = {
     addNewCardActive: boolean
-    setNewPackActive: any
-    packId:string | undefined
+    setNewPackActive: (arg:boolean)=>void
+    packId: string | undefined
 }
 
 export const ModalAddNewCard = (props: AddNewCardType) => {
@@ -23,8 +23,7 @@ export const ModalAddNewCard = (props: AddNewCardType) => {
         setCardQuestion('')
         setCardAnswer('')
         props.setNewPackActive(false)
-       /* dispatch(SetCardDataTC(props.packId))*/
-        // разлогинивает апп
+     
     }
 
     const questionHandler = (e: React.ChangeEvent<HTMLInputElement>)=>{

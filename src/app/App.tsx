@@ -2,9 +2,9 @@ import React, {useEffect, useLayoutEffect, useState} from 'react';
 import Registration from '../features/Registration/Registration';
 import s from './App.module.css'
 import Header from "../common/components/Header/Header";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {createTheme} from '@mui/material/styles'
-import { ThemeProvider} from "@mui/material";
+import {CircularProgress, ThemeProvider} from "@mui/material";
 import {Snackbars} from "../common/snackbars/Snackbars";
 import {ErrorSnackbar} from "../common/components/ErrorSnackBar/ErrorSnackBat";
 import { Login } from '../features/Login/Login';
@@ -17,6 +17,7 @@ import {CardsPack} from "../features/CardsPack/CardsPack";
 import { Card } from '../features/Card/Card';
 import { initializeAppTC } from './app-reducer';
 import { Learn } from '../features/Learn/Learn';
+import { Pack } from '../features/Packs/Pack';
 
 
 export const font = "'Montserrat', sans-serif";
@@ -36,18 +37,21 @@ function App() {
     const isInitialized = useAppSelector((state) => state.app.isInitialized)
 
     useEffect(() => {
-        console.log('use app')
       dispatch(initializeAppTC())
     }, [])
+    
     if (!isInitialized) {
-        return <div >
-            loading
-        </div>}
+        return <div className={s.init}>
+            <CircularProgress color="inherit"/>
+        </div>
+    }
     return (
         <ThemeProvider theme={theme}>
             <div className={s.app}>
                 <Header/>
+                <div className={s.appContainer}>
                 <Routes>
+                    <Route path={'/'} element={<Navigate to={'/profile'}/>}/>
                     <Route path={'/login'} element={<Login/>}></Route>
                     <Route path={'/profile'} element={<Profile/>}></Route>
                     <Route path={'/registration'} element={<Registration/>}></Route>
@@ -55,9 +59,11 @@ function App() {
                     <Route path={'/checkemail'} element={<CheckEmail/>}></Route>
                     <Route path={'/set-new-password/:token'} element={<SetNewPassword/>}></Route>
                     <Route path={'/packs'} element={<CardsPack/>}></Route>
+                    <Route path={'/packs1'} element={<Pack/>}></Route>
                     <Route path={'/cards/:packId'} element={<Card/>}></Route>
                     <Route path={'/learn/:packId'} element={<Learn/>}></Route>
                 </Routes>
+                </div>
             </div>
             <Snackbars/>
             <ErrorSnackbar/>

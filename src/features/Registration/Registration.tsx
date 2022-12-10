@@ -8,8 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import {font} from "../../app/App";
 import s from './Registration.module.css'
 import {useAppDispatch} from "../../common/hooks/react-redux-hooks";
-import {registerTC} from "./registration-reducer";
 import {Visibility, VisibilityOff} from '@mui/icons-material';
+import { registerTC } from '../Login/auth-reducer';
 
 type FormikErrorType = {
     email?: string

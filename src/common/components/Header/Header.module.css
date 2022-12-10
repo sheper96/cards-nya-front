@@ -25,4 +25,56 @@
     border-radius: 50%;
 }
 
+.profileMenu {
+    position: absolute;
+    top: 60px;
+    right: 125px;
+    background-color: #fff;
+    width: 150px;
+    height: 70px;
+    border: 1px #cbcbcb solid;
+    border-radius: 2px;
+    box-shadow: 1px 1px 2px  #b7b5b5;
+}
+
+
+
+.menu {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+    align-items: center;
+    /*padding-top: 20px;
+    padding-bottom: 20px;*/
+}
+
+.nav {
+    font-size: 20px;
+    user-select: none;
+    text-decoration: none;
+    color: black;
+}
+
+.nav:hover {
+    color: #525252;
+}
+
+.menu:focus {
+    background-color: #1976d2;
+}
+
+@media (max-width: 450px) {
+    .headerContainer {
+        justify-content: center;
+    }
+
+    .imgBlock img {
+        position: absolute;
+        display: none
+    }
+}
+
+
 
