@@ -2,7 +2,7 @@ import {Checkbox, FormControlLabel, TextField} from "@mui/material";
 import {useState} from "react";
 import {ModalContainer} from "../../../../common/components/ModalContainer/ModalContainer";
 import {useAppDispatch} from "../../../../common/hooks/react-redux-hooks";
-import {createNewPackTC, deleteCardTC} from "../../../CardsPack/cards-pack-reducer";
+import { deleteCardTC } from "../../../Card/cards-reducer";
 
 type DeleteCardType = {
     deleteCardActive: boolean
@@ -19,10 +19,9 @@ export const ModalDeleteCard = (props: DeleteCardType) => {
 
     const deleteCard = () => {
         dispatch(deleteCardTC(props.cardId))
-
+        props.setDeleteCardActive(false)
     }
-
-
+    
     return (
         <div>
             <ModalContainer title={'Delete Card'} active={props.deleteCardActive} setActive={props.setDeleteCardActive}

@@ -1,4 +1,4 @@
-import {SetCardDataTC, SetCardPackDataTC} from './cards-pack-reducer';
+import { SetCardPackDataTC} from './cards-pack-reducer';
 import s from './CardsPack.module.css'
 import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hooks";
 import {useEffect, useState} from 'react';

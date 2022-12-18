@@ -22,9 +22,9 @@ const Profile = () => {
     let nameAuth=useAppSelector(state=>state.auth.userInfo?.name)
     let email=useAppSelector(state=>state.auth.userInfo?.email)
     let isLoggedIn=useAppSelector(state=>state.auth.isLoggedIn)
-    const page = useAppSelector((state) => state.packs2.packData.page)
+    const page = useAppSelector((state) => state.packs.packData.page)
 
-    const pageCount = useAppSelector((state) => state.packs2.packData.pageCount)
+    const pageCount = useAppSelector((state) => state.packs.packData.pageCount)
 
 
     const [name, setName] = useState(nameAuth)

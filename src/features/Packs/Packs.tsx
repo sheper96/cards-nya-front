@@ -15,22 +15,22 @@ import {Edit} from '@mui/icons-material';
 import {ModalDeletePack} from '../ModalWidnows/PackModals/ModalDeletePack/ModalDeletePack';
 import {ModalEditPack} from '../ModalWidnows/PackModals/ModalEditPack/ModalEditPack';
 import {ModalAddNewPack} from '../ModalWidnows/PackModals/ModalAddNewPack/ModalAddNewPack';
-import {SetPackDataTC} from './pack-reducer';
-import {setPacksTC, setUrlParamsAC, UrlParamsType} from './packs2-reducer';
+import {setPacksTC, setUrlParamsAC, UrlParamsType} from './packs-reducer';
 import {filterQueryParams} from '../../common/utils/query-params';
 import {useDebounce} from '../../common/utils/useDebounce';
+import { Pack } from './Pack/Pack';
 
-export const Pack = () => {
+export const Packs = () => {
     const dispatch = useAppDispatch()
     let isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    const packs = useAppSelector((state: any) => state.cards.cardPackData?.cardPacks)
-    const totalCount = useAppSelector((state: any) => state.cards.cardPackData?.cardPacksTotalCount)
+    
+    const totalCount = useAppSelector((state) => state.packs.packData.cardPacksTotalCount)
+    const packs = useAppSelector((state) => state.packs.packData.cardPacks)
     const userId = useAppSelector((state) => state.auth.userInfo?._id)
     const [addNewPackActive, setNewPackActive] = useState(false)
-    const [editPackActive, setEditPackActive] = useState(false)
-    const [deletePackActive, setDeletePackActive] = useState(false)
-    const [packId, setPackId] = useState('')
+    
     const [packName, setPackName] = useState('')
+
 
     const [value, setValue] = useState<number[]>([0, 100])
     const [page, setPage] = useState(1);
@@ -98,18 +98,7 @@ export const Pack = () => {
         setValue(newValue as number[]);
     };
 
-    const deleteModalPage = (id: string,packName:string) => {
-        setPackId(id)
-        setPackName(packName)
-        setDeletePackActive(true)
-    }
-
-    const editModalPage = (id: string,packName:string) => {
-        setPackId(id)
-        setPackName(packName)
-        setEditPackActive(true)
-        console.log(editPackActive)
-    }
+   
 
     const searchValueTextHandler = (valueSearch: string) => {
         setPackName(valueSearch)
@@ -250,37 +239,16 @@ export const Pack = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {packs && packs.map((p: any) => (
-                                <TableRow
-                                    key={p._id}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        <NavLink to={`/cards/${p._id}`}
-
-                                        >{p.name}</NavLink>
-                                    </TableCell>
-                                    <TableCell align="right">{p.cardsCount}</TableCell>
-                                    <TableCell align="right">{p.updated}</TableCell>
-                                    <TableCell align="right">{p.user_name}</TableCell>
-                                    <TableCell align="right">{userId === p.user_id
-                                        ? <div>
-                                            <IconButton aria-label="delete"
-                                                        onClick={() => deleteModalPage(p._id,p.name)}><DeleteIcon/></IconButton>
-                                            <IconButton aria-label="delete" onClick={() => editModalPage(p._id,p.name)}><Edit/></IconButton>
-                                        </div>
-                                        : <h3>321</h3>}
-                                    </TableCell>
-                                </TableRow>
+                         
+                            {packs && packs.map((p)=>(
+                                <Pack key={p._id} pack={p}/>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Pagination count={count} color="primary" onChange={handleChange}/>
+                <Pagination className={s.pagination} count={count} color="primary" onChange={handleChange}/>
             </PackBoxContainer>
             <ModalAddNewPack addNewPackActive={addNewPackActive} setNewPackActive={setNewPackActive}/>
-            <ModalEditPack editPackActive={editPackActive} setEditPackActive={setEditPackActive} packId={packId} packName={packName}/>
-            <ModalDeletePack deletePackActive={deletePackActive} setDeletePackActive={setDeletePackActive}
-                             packId={packId} packName={packName}/>
         </div>
     );
 };

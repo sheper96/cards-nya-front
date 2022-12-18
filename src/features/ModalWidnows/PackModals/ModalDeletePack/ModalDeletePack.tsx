@@ -2,7 +2,7 @@ import {Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { useState } from "react";
 import { ModalContainer } from "../../../../common/components/ModalContainer/ModalContainer";
 import { useAppDispatch } from "../../../../common/hooks/react-redux-hooks";
-import { deletePackTC, SetCardPackDataTC } from "../../../CardsPack/cards-pack-reducer";
+import { deletePackTC } from "../../../Packs/packs-reducer";
 
 
 type DeletePackType ={
@@ -22,7 +22,6 @@ export const ModalDeletePack = (props:DeletePackType) => {
     const deletePack = () =>{
         dispatch(deletePackTC(props.packId))
         props.setDeletePackActive(false)
-        dispatch(SetCardPackDataTC(1))
     }
    
 

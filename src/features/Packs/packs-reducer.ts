@@ -1,7 +1,5 @@
 import {AppThunk} from "../../app/store";
-
 import {setAppStatusAC} from "../../app/app-reducer";
-import {PackDataType, PackType } from "./pack-reducer";
 import { cardPacksAPI, ResponsePacksType } from "../../app/api";
 
 const initialState= {
@@ -28,7 +26,7 @@ const initialState= {
 export type PacksActionsType = ReturnType<typeof setPackDataAC> |
     ReturnType<typeof setUrlParamsAC> 
 
-export const packsReducer2 = (state = initialState, action: PacksActionsType): InitialPacksStateType => {
+export const packsReducer = (state = initialState, action: PacksActionsType): InitialPacksStateType => {
     
 
         switch (action.type) {
@@ -58,7 +56,7 @@ export const setUrlParamsAC = (params: UrlParamsType) => {
 //thunks
 
 export const setPacksTC = (): AppThunk => async (dispatch, getState) => {
-    const urlParams = getState().packs2.params
+    const urlParams = getState().packs.params
     dispatch(setAppStatusAC("loading"))
     try {
         const res = await cardPacksAPI.getPacks({...urlParams})
@@ -71,6 +69,41 @@ export const setPacksTC = (): AppThunk => async (dispatch, getState) => {
 }
 
 
+export const createNewPackTC = (packName: string, isPrivate: boolean) :AppThunk => async (dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+
+    try {
+        const res = await cardPacksAPI.addCardPack(packName, isPrivate)
+        dispatch(setPacksTC())
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+
+export const deletePackTC = (packId: string) :AppThunk => async (dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+
+    try {
+        const res = await cardPacksAPI.deleteCardPack(packId)
+        dispatch(setPacksTC())
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+
+export const editPackTC = (packId: string, name: string, isPrivate: boolean) :AppThunk => async (dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+
+    try {
+        const res = await cardPacksAPI.updateCardPack(packId, name, isPrivate)
+        dispatch(setPacksTC())
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+
+
+
 //types
 export type InitialPacksStateType = typeof initialState
 
@@ -81,4 +114,37 @@ export type UrlParamsType = {
     userID?: string
     min?: string
     max?: string
+}
+
+
+export type PackType = {
+    _id: string
+    user_id: string,
+    user_name: string,
+    private: false,
+    name: string,
+    path: string,
+    grade: number
+    shots: number
+    deckCover: string,
+    cardsCount: 0
+    type: string
+    rating: number
+    created: string,
+    updated: string,
+    more_id: string,
+    "__v": number
+}
+
+
+export type PackDataType = {
+    cardPacks: PackType[]
+    cardPacksTotalCount: number
+    maxCardsCount: number
+    minCardsCount: number
+    page: number
+    pageCount: number
+    token: string
+    tokenDeathTime: number
+
 }

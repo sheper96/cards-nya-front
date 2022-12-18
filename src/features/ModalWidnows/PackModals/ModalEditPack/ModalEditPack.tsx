@@ -1,10 +1,13 @@
-import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, TextField } from "@mui/material";
+import {Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import {ChangeEvent, useEffect, useState } from "react";
+import { font } from "../../../../app/App";
 import { ModalContainer } from "../../../../common/components/ModalContainer/ModalContainer";
 import { SvgSelector } from "../../../../common/components/SvgSelector/svgSelector";
 import { useAppDispatch } from "../../../../common/hooks/react-redux-hooks";
-import { deletePackTC, editPackTC } from "../../../CardsPack/cards-pack-reducer";
+import { editPackTC } from "../../../Packs/packs-reducer";
+import s from './ModalEditPack.module.css'
+
 
 type EditPackType ={
     editPackActive:boolean
@@ -35,34 +38,31 @@ export const ModalEditPack = (props:EditPackType) => {
         props.setEditPackActive(false)
     }
 
-    type FormikErrorsType = {
-        newPackName?: string
-    }
+    type FormikErrorType = {
+        packName?: string
+        privatePack?: string
 
+    }
 
     const formik = useFormik({
         initialValues: {
-            newPackName: props.packName
+            packName: '',
+            privatePack: false
         },
         validate: (values) => {
-            const errors: FormikErrorsType = {}
-            if (!values.newPackName) {
-                errors.newPackName = 'required'
+            const errors: FormikErrorType = {}
+            if (values.packName.length < 1) {
+                errors.packName = 'enter pack name'
             }
-            if (values.newPackName.length > 40) {
-                errors.newPackName = 'your pack name is too long'
-            }
-            if (values.newPackName === props.packName) {
-                errors.newPackName = 'your new pack name is the same'
+            if (values.packName.length > 40) {
+                errors.packName = 'your pack name is too long'
             }
             return errors
         },
+
         onSubmit: values => {
+            dispatch(editPackTC(props.packId,values.packName,values.privatePack))
             formik.resetForm()
-           // props.handleClose()
-            props.setEditPackActive(false)
-            //dispatch(changePackTC({_id: props.packId, name: values.newPackName}))
-            dispatch(editPackTC(props.packId,values.newPackName,checked))
         }
     })
     
@@ -70,8 +70,37 @@ export const ModalEditPack = (props:EditPackType) => {
     return (
         <div >
             <ModalContainer title={'Edit pack'} active={props.editPackActive} setActive={props.setEditPackActive} buttonName={'Save'} buttonHandler={editPack}>
-                <TextField id="standard-basic" label="Name Pack" variant="standard" value={namePack} onChange={onChangeInputHandler}/>
-                <FormControlLabel control={<Checkbox value={checked} onChange={onChangeCheckBoxHandler} />} label="Private Pack" />
+               {/* <TextField id="standard-basic" label="Name Pack" variant="standard" value={namePack} onChange={onChangeInputHandler}/>
+                <FormControlLabel control={<Checkbox value={checked} onChange={onChangeCheckBoxHandler} />} label="Private Pack" />*/}
+                <form onSubmit={formik.handleSubmit} className={s.form}>
+
+                    <TextField variant="standard"
+                               error={
+                                   Boolean(formik.errors.packName && formik.touched.packName)
+                               }
+                               helperText={
+                                   formik.errors.packName &&
+                                   formik.touched.packName &&
+                                   String(formik.errors.packName)
+                               }
+                               label="Pack Name"
+                               type="text"
+                               margin="normal"
+                               {...formik.getFieldProps('packName')}
+                               inputProps={{style: {fontFamily: font}}}
+                               InputLabelProps={{style: {fontFamily: font}}}
+                    />
+
+                    <Box className={s.row}>
+                        <FormControlLabel {...formik.getFieldProps('privatePack')} label={'Private Pack'}
+                                          control={<Checkbox/>}/>
+
+                    </Box>
+                    <Button className='button' type={'submit'} variant={'contained'} color={'primary'}>
+                        Submit
+                    </Button>
+
+                </form>
                 </ModalContainer>
 
         </div>

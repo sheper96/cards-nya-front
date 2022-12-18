@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { PackType } from '../features/Packs/pack-reducer';
-import { UrlParamsType } from '../features/Packs/packs2-reducer';
+import {CardsType, CardsUrlType } from '../features/Card/cards-reducer';
+import {PackType, UrlParamsType } from '../features/Packs/packs-reducer';
 
 export const instance = axios.create({
     baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/',
@@ -78,13 +78,20 @@ export const cardPacksAPI = {
     },
 }
 export const cardsAPI = {
-    getCards(id?: string) {
-        return instance.get(`cards/card?cardsPack_id=${id} `);
+    getCards(params:CardsUrlType) {
+        return instance.get<ResponseCardsType>(`cards/card`, {
+            params: {
+                page: params.page,
+                pageCount: params.pageCount,
+                cardsPack_id: params.cardPackId
+            }
+        })
+
     },
-    addNewCard(cardsPackId: string | undefined, question: string, answer: string) {
+    addNewCard(packId: string , question: string, answer: string) {
         return instance.post('cards/card', {
             card: {
-                cardsPack_id: cardsPackId,
+                cardsPack_id: packId,
                 question: question,
                 answer: answer,
                 grade: 0,
@@ -149,6 +156,22 @@ export type ResponsePacksType = {
     cardPacksTotalCount: number;
     minCardsCount: number;
     maxCardsCount: number;
+    token: string;
+    tokenDeathTime: number;
+}
+
+export type ResponseCardsType = {
+    cards: CardsType[];
+    packUserId: string;
+    packName: string;
+    packPrivate: false;
+    packCreated: Date;
+    packUpdated: Date;
+    page: number;
+    pageCount: number;
+    cardsTotalCount: number;
+    minGrade: 0;
+    maxGrade: 6;
     token: string;
     tokenDeathTime: number;
 }

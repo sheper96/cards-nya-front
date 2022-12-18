@@ -1,0 +1,21 @@
+.icons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.authtorButtons{
+    display: flex;
+    flex-direction: row;
+}
+
+.pack{
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}

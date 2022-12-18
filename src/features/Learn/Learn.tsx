@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import {useAppDispatch, useAppSelector } from "../../common/hooks/react-redux-hooks";
-import {addGradeTC, CardsType, SetCardDataTC } from "../CardsPack/cards-pack-reducer";
+import { SetCardLearnDataTC } from "../Card/cards-reducer";
+import {addGradeTC, CardsType } from "../CardsPack/cards-pack-reducer";
 import s from './Learn.module.css'
 
 
@@ -31,7 +32,7 @@ export const Learn = () => {
     const [first, setFirst] = useState<boolean>(true);
     const [active, setActive] = useState<boolean>(false);
     const [valueRadio, setValueRadio] = useState<number>(1);
-    const cards:CardsType[] = useAppSelector((state:any) => state.cards?.cardsData?.cards);
+    const cards:CardsType[] = useAppSelector((state:any) => state.cards.cardsData.cards);
 
     const updateGrade = (grade:number,card_id:string)=>{
         setActive(false)
@@ -65,7 +66,7 @@ export const Learn = () => {
 
         if (first) {
             console.log("use effect")
-            dispatch(SetCardDataTC(packId));
+            dispatch(SetCardLearnDataTC(packId));
             setFirst(false);
         }
 

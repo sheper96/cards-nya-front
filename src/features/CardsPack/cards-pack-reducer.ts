@@ -3,7 +3,9 @@ import {cardPacksAPI, cardsAPI,} from "../../app/api";
 import {handleServerNetworkError} from "../../common/utils/utils";
 import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-reducer";
 import {setForgottenEmailAC, setIsPasswordReset, setUserInfoAC} from "../Login/auth-reducer";
+/*
 import { PackType } from "../Packs/pack-reducer";
+*/
 
 export type PacksInitialType = {
     cardPackData: PackDataType
@@ -174,7 +176,7 @@ export const editPackTC = (packId: string, name: string, isPrivate: boolean) => 
 }
 
 //Cards
-
+/*
 export const SetCardDataTC = (id?: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
@@ -186,8 +188,9 @@ export const SetCardDataTC = (id?: string) => async (dispatch: Dispatch) => {
     } finally {
         dispatch(setAppStatusAC('succeeded'))
     }
-}
+}*/
 
+/*
 export const addNewCardTC = (cardsPackId: string | undefined, question: string, answer: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
@@ -196,6 +199,7 @@ export const addNewCardTC = (cardsPackId: string | undefined, question: string, 
         dispatch(setAppStatusAC('succeeded'))
     }
 }
+*/
 
 export const updateCardTC = (cardId: string, question: string, answer: string) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
