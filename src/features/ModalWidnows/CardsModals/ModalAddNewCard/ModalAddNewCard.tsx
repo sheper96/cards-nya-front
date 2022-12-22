@@ -12,6 +12,7 @@ type AddNewCardType = {
     addNewCardActive: boolean
     setNewPackActive: (arg:boolean)=>void
     packId: string
+    handleClose:()=>void 
 }
 
 export const ModalAddNewCard = (props: AddNewCardType) => {
@@ -21,14 +22,6 @@ export const ModalAddNewCard = (props: AddNewCardType) => {
     const [isPrivate, setIsPrivate] = useState(false)
 
     const dispatch = useAppDispatch()
-
-    const addNewCard = () => {
-        dispatch(addNewCardTC(props.packId,cardQuestion,cardAnswer))
-        setCardQuestion('')
-        setCardAnswer('')
-        props.setNewPackActive(false)
-     
-    }
 
     const questionHandler = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setCardQuestion(e.currentTarget.value)
@@ -52,7 +45,7 @@ export const ModalAddNewCard = (props: AddNewCardType) => {
         validate: (values) => {
             const errors: FormikErrorType = {}
             if (values.question.length < 1) {
-                errors.question = 'pack name'
+                errors.question = 'enter question'
             }
             if (values.question.length > 40) {
                 errors.question = 'pack name is too long'
@@ -68,18 +61,15 @@ export const ModalAddNewCard = (props: AddNewCardType) => {
 
         onSubmit: values => {
             dispatch(addNewCardTC(props.packId,values.question,values.answer))
+            props.handleClose()
             formik.resetForm()
         }
     })
 
     return (
         <div>
-            <ModalContainer title={'Add new Card'} active={props.addNewCardActive} setActive={props.setNewPackActive}
-                            buttonName={'Add New Card'} buttonHandler={addNewCard}>
-               {/* <TextField onChange={questionHandler}  label="Question" variant="standard" value={cardQuestion}/>
-                <TextField onChange={answerHandler}  label="Answer" variant="standard" value={cardAnswer}/>*/}
-                <form onSubmit={formik.handleSubmit} className={s.form}>
-                    <TextField variant="standard"
+                <form className={s.form} onSubmit={formik.handleSubmit}>
+                    <TextField variant="standard" fullWidth
                                error={
                                    Boolean(formik.errors.question && formik.touched.question)
                                }
@@ -95,7 +85,7 @@ export const ModalAddNewCard = (props: AddNewCardType) => {
                                inputProps={{style: {fontFamily: font}}}
                                InputLabelProps={{style: {fontFamily: font}}}
                     />
-                    <TextField variant="standard"
+                    <TextField variant="standard" fullWidth
                                error={
                                    Boolean(formik.errors.answer && formik.touched.answer)
                                }
@@ -111,13 +101,16 @@ export const ModalAddNewCard = (props: AddNewCardType) => {
                                inputProps={{style: {fontFamily: font}}}
                                InputLabelProps={{style: {fontFamily: font}}}
                     />
-
-                    <Button className='button' type={'submit'} variant={'contained'} color={'primary'}>
-                        Submit
-                    </Button>
-
+                    <div className={s.buttons}>
+                    <Button
+                        onClick={props.handleClose}
+                        style={{
+                            backgroundColor: "#ffffff",
+                            color: '#000'
+                        }} variant="contained" size="large" sx={{borderRadius: 7.5}}>Cancel</Button>
+                    <Button  variant="contained" type={'submit'} size="large" sx={{borderRadius: 7.5}}>Save</Button>
+                        </div>
                 </form>
-            </ModalContainer>
         </div>
     );
 };

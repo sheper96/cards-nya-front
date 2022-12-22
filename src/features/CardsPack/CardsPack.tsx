@@ -150,7 +150,7 @@ export const CardsPack = () => {
                 </TableContainer>
                 <Pagination count={count} color="primary" onChange={handleChange}/>
             </PackBoxContainer>
-            <ModalAddNewPack addNewPackActive={addNewPackActive} setNewPackActive={setNewPackActive} />
+           {/* <ModalAddNewPack addNewPackActive={addNewPackActive} setNewPackActive={setNewPackActive} />*/}
             {/*<ModalEditPack editPackActive={editPackActive} setEditPackActive={setEditPackActive} packId={packId}/>*/}
            {/* <ModalDeletePack deletePackActive={deletePackActive} setDeletePackActive={setDeletePackActive} packId={packId}/>*/}
         </div>

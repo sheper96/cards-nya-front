@@ -19,6 +19,8 @@ import {setPacksTC, setUrlParamsAC, UrlParamsType} from './packs-reducer';
 import {filterQueryParams} from '../../common/utils/query-params';
 import {useDebounce} from '../../common/utils/useDebounce';
 import { Pack } from './Pack/Pack';
+import { ModalContainerTwo } from '../../common/components/ModalContainer/ModalContainerTwo';
+import { ModalContainer } from '../../common/components/ModalContainer/ModalContainer';
 
 export const Packs = () => {
     const dispatch = useAppDispatch()
@@ -47,6 +49,12 @@ export const Packs = () => {
     const maxRangeURL = searchParams.get('max') ? searchParams.get('max') + '' : ''
 
 
+
+    const [open, setOpen] = useState(false)
+
+    const handleClose = () =>{
+        setOpen(false)
+    }
     const [searchValue, setSearchValue] = useState<string>(packNameURL ? packNameURL : '')
 
     const debouncedValue = useDebounce<string>(searchValue, 500)
@@ -198,10 +206,11 @@ export const Packs = () => {
         return <Navigate to={'/login'}/>
     }
 
+
     return (
-        <div className={s.container}>
+        <div >
             <PackBoxContainer title={"Pack List"} buttonTitle={"Add New Pack"}
-                              buttonCallback={() => setNewPackActive(true)}>
+                              buttonCallback={() => setOpen(true)}>
                 <div className={s.workingPanel}>
                     <div className={s.search}>
                         <h3>Search</h3>
@@ -248,7 +257,11 @@ export const Packs = () => {
                 </TableContainer>
                 <Pagination className={s.pagination} count={count} color="primary" onChange={handleChange}/>
             </PackBoxContainer>
-            <ModalAddNewPack addNewPackActive={addNewPackActive} setNewPackActive={setNewPackActive}/>
+            <ModalContainerTwo open={open} handleClose={handleClose} title={'add new card'}>
+             <ModalAddNewPack handleClose={handleClose} />
+            </ModalContainerTwo>
+          
+            
         </div>
     );
 };

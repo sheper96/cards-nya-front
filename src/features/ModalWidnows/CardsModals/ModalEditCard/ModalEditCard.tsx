@@ -9,11 +9,10 @@ import s from './ModalEditCard.module.css'
 
 
 type AddNewCardType = {
-    editCardActive: boolean
-    setEditCardActive: (arg:boolean)=>void
     cardId:string
     question:string
     answer:string
+    handleClose:()=>void
 
 }
 
@@ -53,18 +52,14 @@ export const ModalEditCard = (props: AddNewCardType) => {
         onSubmit: values => {
             dispatch(updateCardTC(props.cardId,values.question,values.answer))
             formik.resetForm()
-            props.setEditCardActive(false)
+            props.handleClose()
         }
     })
 
     return (
         <div>
-            <ModalContainer title={'Edit Card'} active={props.editCardActive} setActive={props.setEditCardActive}
-                            buttonName={'Save'} buttonHandler={formik.handleSubmit}>
-               {/* <TextField onChange={questionHandler}  label="Question" variant="standard" value={cardQuestion}/>
-                <TextField onChange={answerHandler}  label="Answer" variant="standard" value={cardAnswer}/>*/}
                 <form onSubmit={formik.handleSubmit} className={s.form}>
-                    <TextField variant="standard"
+                    <TextField variant="standard" fullWidth
                                error={
                                    Boolean(formik.errors.question && formik.touched.question)
                                }
@@ -80,7 +75,7 @@ export const ModalEditCard = (props: AddNewCardType) => {
                                inputProps={{style: {fontFamily: font}}}
                                InputLabelProps={{style: {fontFamily: font}}}
                     />
-                    <TextField variant="standard"
+                    <TextField variant="standard" fullWidth
                                error={
                                    Boolean(formik.errors.answer && formik.touched.answer)
                                }
@@ -96,12 +91,16 @@ export const ModalEditCard = (props: AddNewCardType) => {
                                inputProps={{style: {fontFamily: font}}}
                                InputLabelProps={{style: {fontFamily: font}}}
                     />
-
-                    <Button className='button' type={'submit'} variant={'contained'} color={'primary'}>
-                        Submit
-                    </Button>
+                    <div className={s.buttons}>
+                    <Button
+                        onClick={props.handleClose}
+                        style={{
+                            backgroundColor: "#ffffff",
+                            color: '#000'
+                        }} variant="contained" size="large" sx={{borderRadius: 7.5}}>Cancel</Button>
+                    <Button  variant="contained" type={'submit'} size="large" sx={{borderRadius: 7.5}}>Save</Button>
+                        </div>
                     </form>
-            </ModalContainer>
         </div>
     );
 };

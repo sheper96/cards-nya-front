@@ -23,6 +23,14 @@ const Profile = () => {
     let email=useAppSelector(state=>state.auth.userInfo?.email)
     let isLoggedIn=useAppSelector(state=>state.auth.isLoggedIn)
     const page = useAppSelector((state) => state.packs.packData.page)
+    
+    const [openModal,setOpenModal] = useState(false)
+    const handleOpenModal =()=>{
+        setOpenModal(true)
+    }
+    const handleCloseModal =()=>{
+        setOpenModal(false)
+    }
 
     const pageCount = useAppSelector((state) => state.packs.packData.pageCount)
 

@@ -9,6 +9,7 @@ import { ModalDeletePack } from "../../ModalWidnows/PackModals/ModalDeletePack/M
 import { SvgSelector } from "../../../common/components/SvgSelector/svgSelector";
 import s from './Pack.module.css'
 import {NavLink, useNavigate } from "react-router-dom";
+import { ModalContainerTwo } from "../../../common/components/ModalContainer/ModalContainerTwo";
 
 
 
@@ -26,7 +27,25 @@ export const Pack = ({pack}:PackPropsType) => {
     const [deletePackActive, setDeletePackActive] = useState(false)
     const pageCardNumber = useAppSelector((state) => state.cards.cardsData.page)
     const pageCardCount = useAppSelector((state) => state.cards.cardsData.pageCount)
+    
+    const [openEdit,setOpenEdit] =useState(false)
+    const [openDelete,setOpenDelete] =useState(false)
 
+    const handleEditClose = ()=>{
+        setOpenEdit(false)
+    } 
+    const handleEditOpen = ()=>{
+        setOpenEdit(true)
+    } 
+    
+    const handleDeleteClose = ()=>{
+        setOpenDelete(false)
+    } 
+    
+    const handleDeleteOpen = ()=>{
+        setOpenDelete(true)
+    }
+    
     const deleteModalPage = () => {
         setDeletePackActive(true)
     }
@@ -58,16 +77,21 @@ export const Pack = ({pack}:PackPropsType) => {
                     <div className={s.icon} onClick={learnHandler}> <SvgSelector svgName='cap'/></div>
                     {isAuthor &&
                         <div className={s.authtorButtons}>
-                        <div className={s.icon} onClick={editModalPage}> <SvgSelector svgName='pencil'/></div>
-                        <div className={s.icon} onClick={deleteModalPage}> <SvgSelector svgName='delete'/></div>
+                        <div className={s.icon} onClick={handleEditOpen}> <SvgSelector svgName='pencil'/></div>
+                        <div className={s.icon} onClick={handleDeleteOpen}> <SvgSelector svgName='delete'/></div>
                         </div>
                        }
                     </div>
                 </TableCell>
+                <ModalContainerTwo open={openEdit} handleClose={handleEditClose} title={'edit pack'}>
+                    <ModalEditPack handleClose={handleEditClose} editPackActive={editPackActive} setEditPackActive={setEditPackActive} packId={pack._id} packName={pack.name}/>
+                </ModalContainerTwo>
+                <ModalContainerTwo open={openDelete} handleClose={handleDeleteClose} title={'delete pack'}>
+                    <ModalDeletePack handleClose={handleDeleteClose} deletePackActive={deletePackActive} setDeletePackActive={setDeletePackActive}
+                                     packId={pack._id} packName={pack.name}/>
+                </ModalContainerTwo>
+                
                
-                <ModalEditPack editPackActive={editPackActive} setEditPackActive={setEditPackActive} packId={pack._id} packName={pack.name}/>
-                <ModalDeletePack deletePackActive={deletePackActive} setDeletePackActive={setDeletePackActive}
-                                 packId={pack._id} packName={pack.name}/>
             </TableRow>
         
     );

@@ -1,16 +1,18 @@
-import {Box, Button, Checkbox, FormControlLabel, TextField} from "@mui/material";
+import {Box, Button, Checkbox, FormControlLabel, Modal, TextField} from "@mui/material";
 import { useFormik } from "formik";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { font } from "../../../../app/App";
-import {ModalContainer} from "../../../../common/components/ModalContainer/ModalContainer";
+import {ModalContainer, ModalContainers} from "../../../../common/components/ModalContainer/ModalContainer";
+import { ModalContainerTwo } from "../../../../common/components/ModalContainer/ModalContainerTwo";
 import { useAppDispatch } from "../../../../common/hooks/react-redux-hooks";
 import { createNewPackTC } from "../../../Packs/packs-reducer";
 import s from './ModalAddNewPack.module.css'
 
 
 type AddNewPactType = {
-    addNewPackActive: boolean
-    setNewPackActive: (arg:boolean)=>void
+    addNewPackActive?: boolean
+    setNewPackActive?: (arg:boolean)=>void
+    handleClose:()=>void
 }
 
 export const ModalAddNewPack = (props: AddNewPactType) => {
@@ -18,11 +20,12 @@ export const ModalAddNewPack = (props: AddNewPactType) => {
     const [namePack, setNamePack] = useState('Name Pack')
     const [isPrivate, setIsPrivate] = useState(false)
 
+
     const dispatch = useAppDispatch()
 
     const saveButtonHandler = () => {
         dispatch(createNewPackTC(namePack,isPrivate))
-        props.setNewPackActive(false)
+        props.handleClose()
     }
 
     const setPackHameHandler = (e: React.ChangeEvent<HTMLInputElement>)=>{
@@ -56,20 +59,16 @@ export const ModalAddNewPack = (props: AddNewPactType) => {
         onSubmit: values => {
             dispatch(createNewPackTC(values.packName,values.privatePack))
             formik.resetForm()
+            props.handleClose()
         }
     })
 
 
         return (
-        <div>
-            <ModalContainer title={'Add new Pack'} active={props.addNewPackActive} setActive={props.setNewPackActive}
-                            buttonName={'Save'} buttonHandler={formik.handleSubmit}>
-               {/* <TextField onChange={setPackHameHandler} id="standard-basic" label="Name Pack" variant="standard" value={namePack}/>
-                <FormControlLabel control={<Checkbox defaultChecked/>} label="Private Pack"/>*/}
-                <form onSubmit={formik.handleSubmit} className={s.form}>
-
-                            <TextField variant="standard"
-                                error={
+                <form  className={s.form} onSubmit={formik.handleSubmit}>
+                   
+                            <TextField variant="standard" fullWidth
+                                       error={
                                     Boolean(formik.errors.packName && formik.touched.packName)
                                 }
                                 helperText={
@@ -84,35 +83,17 @@ export const ModalAddNewPack = (props: AddNewPactType) => {
                                 inputProps={{style: {fontFamily: font}}}
                                 InputLabelProps={{style: {fontFamily: font}}}
                             />
-
-                            <Box className={s.row}>
                                 <FormControlLabel {...formik.getFieldProps('privatePack')} label={'Private Pack'}
                                                   control={<Checkbox/>}/>
-
-                            </Box>
-                            <Button className='button' type={'submit'} variant={'contained'} color={'primary'}>
-                               Submit
-                            </Button>
-
-                </form>
-               {/* <form className={s.form} onSubmit={formik.handleSubmit}>
-                    <div className={s.inputForm}>
-                        <TextField
-                            placeholder={'Name pack'}
-                            {...formik.getFieldProps('packName')}
-                        />
-                        <div className={s.error}>
-                            {formik.touched.packName && formik.errors.packName && formik.errors.packName}
+                        <div className={s.buttons}>
+                        <Button
+                            onClick={props.handleClose}
+                            style={{
+                                backgroundColor: "#ffffff",
+                                color: '#000'
+                            }} variant="contained" size="large" sx={{borderRadius: 7.5}}>Cancel</Button>
+                            <Button  variant="contained" type={'submit'} size="large" sx={{borderRadius: 7.5}}>Save</Button>
                         </div>
-                    </div>
-                    <div className={s.buttons}>
-                        <Button  onClick={()=>{}}
-                                     type={'reset'}>Cancel</Button>
-                        <Button  type={'submit'}>Save</Button>
-                    </div>
-                </form>*/}
-                
-            </ModalContainer>
-        </div>
+                </form>
     );
 };

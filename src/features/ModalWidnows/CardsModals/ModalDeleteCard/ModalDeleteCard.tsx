@@ -1,13 +1,15 @@
-import {Checkbox, FormControlLabel, TextField} from "@mui/material";
+import {Button, Checkbox, FormControlLabel, TextField} from "@mui/material";
 import {useState} from "react";
 import {ModalContainer} from "../../../../common/components/ModalContainer/ModalContainer";
 import {useAppDispatch} from "../../../../common/hooks/react-redux-hooks";
 import { deleteCardTC } from "../../../Card/cards-reducer";
+import s from './ModalDeleteCard.module.css'
+
 
 type DeleteCardType = {
-    deleteCardActive: boolean
-    setDeleteCardActive: (arg:boolean)=>void
     cardId:string
+    question:string
+    handleClose:()=>void
 }
 
 export const ModalDeleteCard = (props: DeleteCardType) => {
@@ -19,16 +21,28 @@ export const ModalDeleteCard = (props: DeleteCardType) => {
 
     const deleteCard = () => {
         dispatch(deleteCardTC(props.cardId))
-        props.setDeleteCardActive(false)
+        props.handleClose()
     }
     
     return (
         <div>
-            <ModalContainer title={'Delete Card'} active={props.deleteCardActive} setActive={props.setDeleteCardActive}
-                            buttonName={'Delete'} buttonHandler={deleteCard}>
-                <span>Do you really want to remove {cardName}?
-                        All cards will be deleted.</span>
-            </ModalContainer>
+            
+                <span>Do you really want to remove {props.question} card?
+                       </span>
+            <div className={s.buttons}>
+            <Button
+                onClick={props.handleClose}
+                style={{
+                    backgroundColor: "#ffffff",
+                    color: '#000'
+                }} variant="contained" size="large" sx={{borderRadius: 7.5}}>Cancel</Button>
+            <Button
+                onClick={deleteCard}
+                style={{
+                    backgroundColor: "#ff3636",
+                    color: '#ffff'
+                }} variant="contained" size="large" sx={{borderRadius: 7.5}}>Delete</Button>
+                </div>
         </div>
     );
 };
