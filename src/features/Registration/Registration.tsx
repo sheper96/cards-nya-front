@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
-
 import {useFormik} from "formik";
 import {Button, FormGroup, IconButton, InputAdornment} from "@mui/material";
 import TextField from '@material-ui/core/TextField';
-
 import {font} from "../../app/App";
 import s from './Registration.module.css'
 import {useAppDispatch} from "../../common/hooks/react-redux-hooks";
@@ -37,10 +35,10 @@ const Registration = () => {
                 errors.email = 'Invalid email address';
             }
             if (values.password.length <= 7) {
-                errors.password = 'Password mast be 8 symbol'
+                errors.password = 'Password must be 8 symbol'
             }
             if (values.confirmPassword.length <= 7) {
-                errors.confirmPassword = 'Password mast be 8 symbol'
+                errors.confirmPassword = 'Password must be 8 symbol'
             }
             if (values.confirmPassword.length >1 )
             {
@@ -111,7 +109,6 @@ const Registration = () => {
                                     </InputAdornment>
                             }}
                         />
-
                         <TextField
                             error={
                                 Boolean( formik.errors.confirmPassword && formik.touched.confirmPassword )

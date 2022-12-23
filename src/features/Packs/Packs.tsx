@@ -3,24 +3,17 @@ import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hoo
 import {useEffect, useState} from 'react';
 import {
     Button, ButtonGroup,
-    IconButton,
-    Input, Pagination, Paper, Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField
+    
+     Pagination, Paper, Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import PackBoxContainer from '../../common/components/PackBoxContainer/PackBoxContainer';
-import {authAPI} from '../../app/api';
-import {initializeAppTC} from '../../app/app-reducer';
-import {Navigate, NavLink, useSearchParams} from 'react-router-dom';
-import {Edit} from '@mui/icons-material';
-import {ModalDeletePack} from '../ModalWidnows/PackModals/ModalDeletePack/ModalDeletePack';
-import {ModalEditPack} from '../ModalWidnows/PackModals/ModalEditPack/ModalEditPack';
-import {ModalAddNewPack} from '../ModalWidnows/PackModals/ModalAddNewPack/ModalAddNewPack';
+import {Navigate, useSearchParams} from 'react-router-dom';
 import {setPacksTC, setUrlParamsAC, UrlParamsType} from './packs-reducer';
 import {filterQueryParams} from '../../common/utils/query-params';
 import {useDebounce} from '../../common/utils/useDebounce';
 import { Pack } from './Pack/Pack';
 import { ModalContainerTwo } from '../../common/components/ModalContainer/ModalContainerTwo';
-import { ModalContainer } from '../../common/components/ModalContainer/ModalContainer';
+import { ModalAddNewPack } from '../ModalWidnows/PackModals/ModalAddNewPack/ModalAddNewPack';
 
 export const Packs = () => {
     const dispatch = useAppDispatch()
@@ -29,14 +22,11 @@ export const Packs = () => {
     const totalCount = useAppSelector((state) => state.packs.packData.cardPacksTotalCount)
     const packs = useAppSelector((state) => state.packs.packData.cardPacks)
     const userId = useAppSelector((state) => state.auth.userInfo?._id)
-    const [addNewPackActive, setNewPackActive] = useState(false)
     
     const [packName, setPackName] = useState('')
 
 
     const [value, setValue] = useState<number[]>([0, 100])
-    const [page, setPage] = useState(1);
-    const [myCards, setMyCards] = useState<boolean>(false)
     const count = Math.ceil(totalCount / 5)
 
     const [searchParams, setSearchParams] = useSearchParams()
@@ -105,14 +95,7 @@ export const Packs = () => {
     const updateRange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
     };
-
-   
-
-    const searchValueTextHandler = (valueSearch: string) => {
-        setPackName(valueSearch)
-        setSearchParams({...filterQueryParams({...paramsSearchState, packName: valueSearch, userID: userIDURL})})
-    }
-
+    
     const myPacksHandler = () => {
         userId && setParamsSearchState({
             ...paramsSearchState,
@@ -260,8 +243,6 @@ export const Packs = () => {
             <ModalContainerTwo open={open} handleClose={handleClose} title={'add new card'}>
              <ModalAddNewPack handleClose={handleClose} />
             </ModalContainerTwo>
-          
-            
         </div>
     );
 };

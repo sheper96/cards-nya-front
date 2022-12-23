@@ -1,5 +1,6 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import {CardsType, CardsUrlType } from '../features/Card/cards-reducer';
+import { UserProfileType } from '../features/Login/auth-reducer';
 import {PackType, UrlParamsType } from '../features/Packs/packs-reducer';
 
 export const instance = axios.create({
@@ -22,6 +23,9 @@ export const authAPI = {
     },
     updateName(data: UpdateUserNameType) {
         return instance.put('auth/me', data);
+    },
+    changeAvatar(data: ChangeUserNameParamsType) {
+        return instance.put<ChangeUserNameParamsType, AxiosResponse<ResponseUpdatesUserType>>('auth/me', data)
     },
     login(data: loginParamsType) {
         return instance.post('/auth/login', data);
@@ -188,3 +192,13 @@ export type UpdateCardPackType = {
     _id: string
 }
 
+export type ChangeUserNameParamsType = {
+    name?: string
+    avatar?: string
+}
+
+export type ResponseUpdatesUserType = {
+    token: string
+    tokenDeathTime: string
+    updatedUser: UserProfileType
+}

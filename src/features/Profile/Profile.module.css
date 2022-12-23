@@ -38,3 +38,23 @@
     color: #000000;
     margin: 0 0 40px 0;
 }
+
+
+.avatarContainer {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+}
+
+.photoButton {
+    position: absolute;
+    right: 1px;
+    bottom: 1px;
+    cursor: pointer;
+}
+

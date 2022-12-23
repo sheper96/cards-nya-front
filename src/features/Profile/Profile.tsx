@@ -1,37 +1,25 @@
-import {faArrowRightFromBracket, faPen} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {Button, TextField} from "@mui/material"
-import {useEffect, useState} from "react"
-import {useSelector} from "react-redux"
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer"
 import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hooks"
 import s from './Profile.module.css'
-import {Navigate, NavLink, useNavigate} from "react-router-dom";
-import React from "react";
-import {initializeAppTC} from "../../app/app-reducer";
-import {logOutTC, updateUserInfoTC } from "../Login/auth-reducer"
-import { authAPI } from "../../app/api"
+import {Navigate, NavLink} from "react-router-dom";
+import React, {ChangeEvent, useRef, useState } from "react";
+import {logOutTC, updateUserInfoAvatarTC, updateUserInfoTC } from "../Login/auth-reducer"
 import { SvgSelector } from "../../common/components/SvgSelector/svgSelector"
-import { AppRootStateType } from "../../app/store"
+import avatar from '../../assets/images/avatar.jpg'
+import { convertFileToBase64 } from "../../common/utils/convertBase64";
+import { errorHandlerUtil } from "../../common/utils/errors-utils";
+
 
 const Profile = () => {
     
     const dispatch = useAppDispatch()
-    const navigate = useNavigate();
     
     let nameAuth=useAppSelector(state=>state.auth.userInfo?.name)
     let email=useAppSelector(state=>state.auth.userInfo?.email)
     let isLoggedIn=useAppSelector(state=>state.auth.isLoggedIn)
     const page = useAppSelector((state) => state.packs.packData.page)
-    
-    const [openModal,setOpenModal] = useState(false)
-    const handleOpenModal =()=>{
-        setOpenModal(true)
-    }
-    const handleCloseModal =()=>{
-        setOpenModal(false)
-    }
-
+    const profile = useAppSelector((state) => state.auth.userInfo)    
     const pageCount = useAppSelector((state) => state.packs.packData.pageCount)
 
 
@@ -43,8 +31,33 @@ const Profile = () => {
     }
     const updateStatusHandler = () => {
         setEditMode(false)
-        dispatch(updateUserInfoTC({name: name, avatar: ''}))
+        dispatch(updateUserInfoAvatarTC({name: name}))
     }
+
+    const inputRef = useRef<HTMLInputElement>(null)
+    const minFileSize = 40000;
+    const selectFileHandler = () => {
+        inputRef && inputRef.current?.click();
+    };
+
+    
+
+    const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length) {
+            const file = e.target.files[0];
+            if (file.size < minFileSize) {
+                convertFileToBase64(file, (file64: string) => {
+                    debugger
+                    dispatch(updateUserInfoAvatarTC({avatar: file64}));
+                });
+            } else {
+                return errorHandlerUtil(e, dispatch)
+            }
+        }
+    }
+
+    const finalUserAvatar = profile?.avatar ? profile.avatar : avatar
+
     if (!isLoggedIn) {
         return <Navigate to={'/login'}/>
     }
@@ -52,13 +65,25 @@ const Profile = () => {
     return (
         <div className={s.container}>
             <div className={s.backToCardsBlock}>
-
             </div>
             <BoxContainer title={'Personal Information'}>
                 <div className={s.profile}>
-                    <div className={s.img}>
-                        <img alt='image'
-                            src="https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg"/>
+                    <div className={s.avatarContainer}>
+                        <img className={s.avatar}
+                             src={finalUserAvatar}
+                             alt={'user-avatar'}
+                        />
+                        <div
+                            className={s.photoButton}
+                            onClick={selectFileHandler}
+                        >
+                            <SvgSelector svgName={'photo'}/>
+                        </div>
+                        <input style={{display: 'none'}}
+                               ref={inputRef}
+                               type="file"
+                               onChange={uploadHandler}
+                        />
                     </div>
                     <div onClick={() => setEditMode(true)}>
                         {!editmode && <span className={s.name}>
@@ -85,5 +110,5 @@ const Profile = () => {
     )
 }
 
-
 export default Profile;
+

@@ -28,22 +28,6 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
     }
 }
 
-
-/*
-export const initializeAppTC = () => async (dispatch:Dispatch) => {
-    try {
-        const res = await authAPI.authMe()
-        dispatch(setLogInAC(true))
-        dispatch(setUserInfoAC(res.data))
-
-    } catch (e) {
-      /!*  dispatch(setAppInitializedAC(false));*!/
-    } finally {
-        dispatch(setAppInitializedAC(true));
-    }
-}
-*/
-
 export const initializeAppTC = (): AppThunk => async (dispatch:Dispatch) => {
     try {
         const res = await authAPI.authMe()

@@ -18,6 +18,7 @@ import { Card } from '../features/Card/Card';
 import { initializeAppTC } from './app-reducer';
 import { Learn } from '../features/Learn/Learn';
 import { Packs } from '../features/Packs/Packs';
+import { Error404 } from '../common/Error404/Error404';
 
 
 export const font = "'Montserrat', sans-serif";
@@ -62,6 +63,8 @@ function App() {
                     <Route path={'/packs1'} element={<Packs/>}></Route>
                     <Route path={'/cards'} element={<Card/>}></Route>
                     <Route path={'/learn/:packId'} element={<Learn/>}></Route>
+                    <Route path={'/error404'} element={<Error404/>}/>
+                    <Route path={'*'} element={<Navigate to={'/error404'}/>}/>
                 </Routes>
                 </div>
             </div>

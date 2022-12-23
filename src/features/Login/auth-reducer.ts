@@ -1,8 +1,9 @@
 import {Dispatch} from "redux";
-import {authAPI, ForgotType, loginParamsType, SetNewPasswordType, UpdateUserNameType} from "../../app/api";
+import {authAPI, ChangeUserNameParamsType, ForgotType, loginParamsType, SetNewPasswordType, UpdateUserNameType} from "../../app/api";
 import {handleServerNetworkError} from "../../common/utils/utils";
 import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-reducer";
 import axios, { AxiosError } from "axios";
+import { AppThunk } from "../../app/store";
 
 export type signInType = {
     email: string,
@@ -84,6 +85,18 @@ export const setLogInAC = (isLoggedIn: boolean) => ({type: 'AUTH/SET-LOGGED_IN_O
 
 //Thunk Creators
 
+
+export const updateUserInfoAvatarTC = (data: ChangeUserNameParamsType): AppThunk => async (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const res = await authAPI.changeAvatar(data)
+        dispatch(setUserInfoAC(res.data.updatedUser))
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
+}
+
+
 export const loginTC = (data: loginParamsType) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
@@ -93,17 +106,14 @@ export const loginTC = (data: loginParamsType) => async (dispatch: Dispatch) => 
             dispatch(setLogInAC(true))
         }
     } catch (error: unknown) {
-        dispatch(setAppStatusAC('failed'))
         if (isAxiosError<MyExpectedResponseType>(error)) {
             if (error.response?.data.error) {
                 handleServerNetworkError(error.response?.data.error, dispatch)
-
-                dispatch(setAppErrorAC('some error'))
             } else {
                 handleServerNetworkError(error.message, dispatch)
             }
         }
-    } finally {
+    }finally {
         dispatch(setAppStatusAC('succeeded'))
     }
 }
@@ -161,7 +171,8 @@ export const registerTC = (data: registerParamsType) => async (dispatch: Dispatc
                 handleServerNetworkError(error.message, dispatch)
             }
         }
-    }finally {
+    }
+    finally {
         dispatch(setAppStatusAC('succeeded'))
     }
 
